@@ -1,0 +1,301 @@
+package [% project_title %]::Admin;
+
+use strict;
+#use warnings;     # debug
+use Params::Validate qw( :all );
+
+our $VERSION = 0.01;
+
+use base qw(
+  [% project_title %]::Base
+  );
+
+#----------------------------------------------------------------------------+
+# _default(\%controller)
+#
+# View the page.
+
+sub _default {
+    my ( $self, $c ) = @_;
+
+    my $load = $c->request->param('load') || 'main';
+
+    my $frame = {
+        main    => 'extras/admin/frame_main.tt',
+        side    => 'extras/admin/frame_side.tt',
+        top     => 'extras/admin/frame_top.tt',
+        default => 'extras/admin/default.tt',
+      };
+
+    $c->request->content_type('text/html');
+
+    $c->template->process(
+        $frame->{$load},
+        {
+            %{ $c->config },
+            username   => $c->request->user,
+            ip_address => $c->request->connection->remote_ip,
+        }
+      )
+      or $self->_error( $c, 'Template process failed', $c->template->error() );
+
+    exit;
+}
+
+#----------------------------------------------------------------------------+
+# _error( \%controller, $title, $value )
+#
+# Print errors/exceptions and exit.
+
+sub _error {
+    my ( $self, $c, $title, $value ) = @_;
+
+    $c->request->content_type('text/html');
+
+    $c->template->process(
+        'extras/admin/error.tt',
+        {
+            %{ $c->config },
+            title  => $title,
+            output => ( $c->config->{debug} == 1 ) ? $value : undef,
+        }
+      )
+      or die $c->template->error();
+
+    exit;
+}
+
+#----------------------------------------------------------------------------+
+# _log_action( \%controller, $value )
+#
+# Logs the action including HTTP request parameters.
+
+sub _log_action {
+    my ( $self, $c, $action )
+      = validate_pos( @_,
+          { type => SCALAR  },
+          { type => HASHREF },
+          { type => SCALAR  }
+          );
+
+    my $user = $c->request->user || 'Unknown';
+    my $ip   = $c->request->connection->remote_ip;
+    my $uri  = $c->request->uri;
+
+    my $param = $c->request->param();
+
+    # convert the key/values into a query string format
+    my $session_val =
+      join( '', map { $_ . '=' . $param->{$_} . '&' } keys %$param );
+
+    my $value = "$uri/?$session_val";
+
+    my ( $dbh, $sth );
+
+    $dbh = $c->stash('DBH');
+
+    eval {
+        $sth = $dbh->prepare(qq{
+            INSERT INTO log_admin SET
+                log_admin_username     = ?,
+                log_admin_action       = ?,
+                log_admin_value        = ?,
+                log_admin_user_ip_addr = ?,
+                log_admin_created      = NOW()
+          });
+
+        $sth->execute( $user, $action, $value, $ip );
+      };
+
+    if ($@) {
+        $self->error( $c, 'Database INSERT failed', $sth->errstr );
+    }
+}
+
+#----------------------------------------------------------------------------+
+# _gen_results( $total, $start, $limit, \%ary_ref )
+#
+# Generate per-page results.
+
+sub _gen_results {
+    my ( $self, $total, $start, $limit, $ary_ref )
+      = validate_pos( @_,
+          { type => SCALAR   },
+          { type => SCALAR   },
+          { type => SCALAR   },
+          { type => SCALAR   },
+          { type => ARRAYREF }
+          );
+
+    # calculate the total pages
+    my $pages = int($total / $limit);
+
+    if ( ($pages * $limit) != $total ) { $pages++ }
+
+    my $first_result = $start + 1;
+    my $last_result  = ($first_result + $limit) - 1;
+
+    $last_result = ($last_result <= $total) ? $last_result : $total;
+
+    # calculate page links totals
+    my $first_page = int( ($first_result - 1) / $limit ) - 6;
+    my $last_page  = int( ($last_result  - 1) / $limit ) + 6;
+
+    my $curr_page = 0;
+    my $links     = "";
+
+    for my $count ( 0 .. ($pages - 1) ) {
+        next if ($first_page > $count);
+        next if ($last_page  < $count);
+
+        if ($count == 0) {
+            if ($start != 0) {
+                $links .= "<a href=\"javascript:startWith('0')\">";
+                $links .= ($count + 1);
+                $links .= "</a>";
+            }
+            else {
+                $links .= "<span>" . ($count + 1) . "</span>";
+
+                $curr_page = ($count + 1);
+            }
+
+            $links .= " ";
+        }
+
+        if ($count > 0) {
+            if ($start != ($count * $limit)) {
+                $links .= "<a href=\"javascript:startWith('" . ($count * $limit) . "')\">";
+                $links .= $count + 1;
+                $links .= "</a>";
+            }
+            else {
+                $links .= "<span>" . ($count + 1) . "</span>";
+
+                $curr_page = ($count + 1);
+            }
+
+            $links .= " ";
+        }
+    }
+
+    # add page navigation buttons
+    if ($curr_page > 1) {
+        $links .= " &#124; <a href=\"javascript:startWith('" . (($curr_page * $limit) - ($limit * 2)) . "')\">";
+        $links .= "Last";
+        $links .= "</a>";
+    }
+
+    if (($pages > 1) && ($total > ($curr_page * $limit))) {
+        $links .= " &#045; <a href=\"javascript:startWith('" . ($curr_page * $limit) . "')\">";
+        $links .= "Next";
+        $links .= "</a>";
+    }
+
+    return {
+        results => {
+            first => $first_result,
+            last  => $last_result,
+            total => $total,
+            loop  => \@$ary_ref,
+        },
+        pages => {
+            current => $curr_page,
+            total   => $pages,
+            links   => $links,
+        },
+    };
+}
+
+#----------------------------------------------------------------------------+
+# merge_hashref( \%hash1, \%hash2 )
+#
+# Return a single reference to a hash, merge key/value pairs.
+
+sub _merge_hashref {
+    my $self = shift;
+    # second argument overrides the first
+    return { map %$_, grep ref $_ eq 'HASH', @_ };
+}
+
+#----------------------------------------------------------------------------+
+# sort_data( $column, $order, \%ary_ref )
+#
+# Return a sorted multi-dimensional array.
+
+sub _sort_data {
+    my ( $self, $column, $order, $ary_ref ) = @_;
+
+    my $alpha = 0;
+
+    for (@$ary_ref) {
+        return unless defined $_->{$column};
+        $alpha = 1, last  if ($_->{$column} =~ /[^0-9 ]/);
+    }
+
+    my @sorted;
+
+    my $dir = ($order eq 'asc') ? +1 : -1;
+
+    if ($alpha) {
+        @sorted =
+          sort { $dir * ($a->{$column} cmp $b->{$column}) } @$ary_ref;
+    }
+    else {
+        @sorted =
+          sort { $dir * ($a->{$column} <=> $b->{$column}) } @$ary_ref;
+    }
+    return \@sorted;
+}
+
+1;
+
+__END__
+
+=head1 NAME
+
+Admin.pm
+
+=head1 SYNOPSIS
+
+  use [% project_title %]::Admin;
+
+=head1 DESCRIPTION
+
+Base class module that is used to load the admin Control Panel.  Also provides 
+shared functionality for installed admin extras.
+
+=head1 OBJECT METHODS
+
+=head2 _error
+
+Print errors/exceptions and exit.
+
+  $self->_error( \%controller, $title, $value );
+
+=head2 _log_action
+
+Logs the action including HTTP request parameters.
+
+  $self->_log_action( \%controller, $value );
+
+=head2 _gen_results
+
+  $self->_gen_results( $total, $start, $limit, $ary_ref );
+
+=head1 SEE ALSO
+
+L<Apache2::WebApp>
+
+=head1 AUTHOR
+
+Marc S. Brooks, E<lt>mbrooks@cpan.orgE<gt> L<http://mbrooks.info>
+
+=head1 COPYRIGHT
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+See L<http://www.perl.com/perl/misc/Artistic.html>
+
+=cut

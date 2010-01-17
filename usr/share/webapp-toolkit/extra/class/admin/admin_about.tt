@@ -1,0 +1,75 @@
+package [% project_title %]::Admin::About;
+
+use strict;
+#use warnings;     # debug
+
+our $VERSION = 0.01;
+
+use base qw(
+  [% project_title %]::Admin
+  );
+
+#----------------------------------------------------------------------------+
+# system(\%controller)
+#
+# Print system environment information.
+
+sub system {
+    my ( $self, $c ) = @_;
+
+    $c->request->content_type('text/html');
+
+    $c->template->process(
+        'extras/admin/system.tt',
+        {
+            %{ $c->config },
+            data => \%ENV,
+        }
+      )
+      or $self->_error( $c, 'Template process failed', $c->template->error() );
+
+    exit;
+}
+
+1;
+
+__END__
+
+=head1 NAME
+
+About.pm
+
+=head1 SYNOPSIS
+
+  use [% project_title %]::Admin::About;
+
+=head1 DESCRIPTION
+
+Application specific information to be used for troubleshooting issues.
+
+=head1 OBJECT METHODS
+
+=head2 URI DISPATCHABLE
+
+=head2 system
+
+Print system environment information.
+
+  http://domain.com/app/admin/panel/about/system
+
+=head1 SEE ALSO
+
+L<Apache2::WebApp>, L<Apache2::WebApp::Admin>
+
+=head1 AUTHOR
+
+Marc S. Brooks, E<lt>mbrooks@cpan.orgE<gt> L<http://mbrooks.info>
+
+=head1 COPYRIGHT
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+See L<http://www.perl.com/perl/misc/Artistic.html>
+
+=cut

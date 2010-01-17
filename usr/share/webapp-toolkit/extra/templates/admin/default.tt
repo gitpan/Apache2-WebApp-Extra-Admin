@@ -1,0 +1,67 @@
+[%#
+   Apache2::WebApp::Toolkit - Admin Control Panel (default.tt)
+   Copyright (C) 2010 Marc S. Brooks <mbrooks@cpan.org>
+
+   Licensed under the terms of the BSD License
+   http://www.opensource.org/licenses/bsd-license.php
+-%]
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>Main</title>
+
+	<meta http-equiv="pragma" content="no-cache" />
+
+	<script type="text/javascript" src="/extras/admin/js/disable.js"></script>
+
+	<style type="text/css">
+		@import url( /extras/admin/css/base.css );
+		@import url( /extras/admin/css/page.css );
+	</style>
+</head>
+<body>
+
+<noscript>
+	<h2>
+		To use this admin you must have a JavaScript-enabled browser
+	</h2>
+</noscript>
+
+
+<!-- page begin -->
+
+<div id="page">
+	<div class="back">
+		<a href="javascript:window.history.go(-1)" title="Back">
+			Back
+		</a>
+	</div>
+
+	<h2 class="title">
+		Control Panel
+	</h2>
+
+	<div id="split">
+		<hr></hr>
+	</div>
+</div>
+
+<!-- page end -->
+
+[% UNLESS username %]
+<!-- error begin -->
+
+<div id="error">
+	<h2>SECURITY WARNING</h2>
+
+	This Control Panel is not protected by authentication.  You can enable authentication by uncommenting the <code>mod_authz_host</code> directives within your project <code>httpd.conf</code>
+</div>
+
+<!-- error begin -->
+[% END %]
+
+</body>
+</html>

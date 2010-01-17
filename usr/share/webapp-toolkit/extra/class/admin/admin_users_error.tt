@@ -1,0 +1,86 @@
+package [% project_title %]::Admin::Users::Error;
+
+use strict;
+#use warnings;     # debug
+
+our $VERSION = 0.01;
+
+#----------------------------------------------------------------------------+
+# Constants to be exported.
+
+use constant ERROR_FORM_INPUT =>
+    "ERROR: The highlighted form fields contain errors";
+
+use constant ERROR_PASSWORD =>
+    "Must be between 8 and 15 alphanumeric characters";
+
+use constant ERROR_PASSWORD_INCORRECT =>
+    "The password entered for this account is incorrect";
+
+use constant ERROR_REQUIRED =>
+    "Required information";
+
+use constant ERROR_USERNAME =>
+    "Must be between 5 and 15 alphanumeric characters";
+
+use constant ERROR_USERNAME_DOESNT_EXIST =>
+    "The username selected doesn't exist";
+
+use constant ERROR_USERNAME_IN_USE =>
+    "The username selected is already in use";
+
+use vars qw( @ISA @EXPORT_OK %EXPORT_TAGS );
+
+require Exporter;
+
+@ISA       = qw( Exporter );
+@EXPORT_OK = qw(
+  ERROR_FORM_INPUT
+  ERROR_PASSWORD
+  ERROR_PASSWORD_INCORRECT
+  ERROR_REQUIRED
+  ERROR_USERNAME
+  ERROR_USERNAME_DOESNT_EXIST
+  ERROR_USERNAME_IN_USE
+);
+
+%EXPORT_TAGS = (
+    all => \@EXPORT_OK,
+);
+
+1;
+
+__END__
+
+=head1 NAME
+
+Error.pm
+
+=head1 SYNOPSIS
+
+  use [% project_title %]::Admin::Users::Error;
+
+=head1 DESCRIPTION
+
+Common errors used by the User Manager application.
+
+=head2 EXPORT
+
+  use [% project_title %]::Admin::Users::Error qw( :all );
+
+=head1 SEE ALSO
+
+L<Apache2::WebApp>, L<Apache2::WebApp::Admin>
+
+=head1 AUTHOR
+
+Marc S. Brooks, E<lt>mbrooks@cpan.orgE<gt> L<http://mbrooks.info>
+
+=head1 COPYRIGHT
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+See L<http://www.perl.com/perl/misc/Artistic.html>
+
+=cut

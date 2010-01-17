@@ -1,0 +1,206 @@
+package [% project_title %]::Admin::Users;
+
+use strict;
+#use warnings;     # debug
+use Apache::Htpasswd;
+
+our $VERSION = 0.01;
+
+use base qw(
+  [% project_title %]::Admin
+  );
+
+#----------------------------------------------------------------------------+
+# _default(\%controller)
+#
+# Dispatch the action.
+
+sub _default {
+    my ( $self, $c ) = @_;
+
+    $self->_list_users($c);
+}
+
+#----------------------------------------------------------------------------+
+# _list_users(\%controller)
+#
+# List the htpasswd users.
+
+sub _list_users {
+    my ( $self, $c ) = @_;
+
+    my $start = $c->request->param('start') || '0';
+    my $sc    = $c->request->param('sc')    || 'username';
+    my $so    = $c->request->param('so')    || 'asc';
+
+    # check the user input
+    my $error;
+    $error = 1 if ($start !~ /^[\d]{1,6}$/);
+    $error = 1 if ($sc    !~ /^[\w]{1,55}$/); 
+    $error = 1 if ($so    !~ /^[\w]{1,4}$/);
+
+    $self->_error( $c, "Error", "Bad Request" ) if $error;
+
+    my $results = $self->_sort_data( $sc, $so, $self->_get_htpasswd_data($c) );
+
+    my $total = @$results;
+
+    my $limit = $c->config->{custom_items_per_page} || '25';
+
+    $c->request->content_type('text/html');
+
+    $c->template->process(
+        'extras/admin/users.tt',
+        {
+            %{ $c->config },
+            sc   => $sc,
+            so   => $so,
+            data => $self->_gen_results( $total, $start, $limit, \@$results ),
+        }
+      )
+      or $self->_error( $c, "Template process failed", $c->template->error() );
+
+    exit;
+}
+
+#----------------------------------------------------------------------------+
+# delete(\%controller)
+#
+# Delete the user from the htpasswd file.
+
+sub delete {
+    my ( $self, $c ) = @_;
+
+    my $username = $c->request->param('username');
+
+    my $htpasswd = $c->config->{apache_doc_root} . '/conf/htpasswd';
+
+    my $pwd = new Apache::Htpasswd($htpasswd);
+
+    my @users = $pwd->fetchUsers();
+
+    foreach (@users) {
+        $pwd->htDelete($_) if (/^(?:|\#)$username/i);
+    }
+
+    # list the users
+    $self->_list_users($c);
+}
+
+#----------------------------------------------------------------------------+
+# status(\%controller)
+#
+# Change the user status.
+
+sub status {
+    my ( $self, $c ) = @_;
+
+    my $username = $c->request->param('username');
+    my $value    = $c->request->param('value');
+
+    my $htpasswd = $c->config->{apache_doc_root} . '/conf/htpasswd';
+
+    open (INFILE, $htpasswd)     or die $self->_error( $c, "Cannot open $htpasswd: $!" );
+    my @lines = <INFILE>;
+    close(INFILE);
+
+    open (OUTFILE, ">$htpasswd") or die $self->_error( $c, "Cannot open $htpasswd: $!" );
+
+    foreach (@lines) {
+        chomp;
+
+        if (/^(?:|\#)$username/i) {
+            if (/^#/) {
+                s/^#(\w+)/$1/gi;
+            }
+            else {
+                s/^(\w+)/\#$1/gi;
+            }
+        }
+
+        print OUTFILE "$_\n";
+    }
+
+    close(OUTFILE);
+
+    # list the users
+    $self->_list_users($c);
+}
+
+#----------------------------------------------------------------------------+
+# _get_htpasswd_data(\%controller)
+#
+# Return the htpasswd user list as a reference to an array.
+
+sub _get_htpasswd_data {
+    my ( $self, $c ) = @_;
+
+    my $htpasswd = $c->config->{apache_doc_root} . '/conf/htpasswd';
+
+    open (FILE, $htpasswd) or die $self->_error( $c, "Cannot open $htpasswd: $!" );
+    my @lines = <FILE>;
+    close(FILE);
+
+    my @results;
+
+    foreach (@lines) {
+        chomp;
+
+        my ( $user, $pass, $epoch ) = split(/\:/);
+
+        my $status;
+
+        if ($user =~ /^#/) {
+            $status = 'Disabled';
+
+            $user =~ s/^#//;
+        }
+        else {
+            $status = 'Active';
+        }
+
+        push( @results, {
+            username => $user,
+            status   => $status,
+            created  => $c->plugin('DateTime')->format_time( $epoch, '%m-%d-%Y %r' ),
+          });
+    }
+
+    return \@results;
+}
+
+1;
+
+__END__
+
+=head1 NAME
+
+Users.pm
+
+=head1 SYNOPSIS
+
+  use [% project_title %]::Admin::Users;
+
+=head1 DESCRIPTION
+
+
+=head1 OBJECT METHODS
+
+=head2 URI DISPATCHABLE
+
+=head1 SEE ALSO
+
+L<Apache2::WebApp>, L<Apache2::WebApp::Admin>, L<Apache::Htpasswd>
+
+=head1 AUTHOR
+
+Marc S. Brooks, E<lt>mbrooks@cpan.orgE<gt> L<http://mbrooks.info>
+
+=head1 COPYRIGHT
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+See L<http://www.perl.com/perl/misc/Artistic.html>
+
+=cut
