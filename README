@@ -44,13 +44,6 @@ GETTING STARTED
    Add this *Extra* to an existing project
       $ webapp-extra Admin
 
-   Add the following to your project "startup.pl"
-      use Project::Admin;
-      use Project::Admin::About;
-      use Project::Admin::Users;
-      use Project::Admin::Users::Add;
-      use Project::Admin::Users::Edit;
-
    Restart your application
       $ webapp-kickstart
 

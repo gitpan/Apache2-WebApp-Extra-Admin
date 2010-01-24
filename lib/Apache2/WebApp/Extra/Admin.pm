@@ -17,7 +17,7 @@
 
 package Apache2::WebApp::Extra::Admin;
 
-our $VERSION = 0.01;
+our $VERSION = 0.02;
 
 1;
 
@@ -75,14 +75,6 @@ this process to insure write permission is allowed within the installation direc
 =head3 Add this I<Extra> to an existing project
 
   $ webapp-extra Admin
-
-=head3 Add the following to your project C<startup.pl>
-
-  use Project::Admin;
-  use Project::Admin::About;
-  use Project::Admin::Users;
-  use Project::Admin::Users::Add;
-  use Project::Admin::Users::Edit;
 
 =head3 Restart your application
 

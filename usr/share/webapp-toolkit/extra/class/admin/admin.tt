@@ -219,18 +219,18 @@ sub _merge_hashref {
 }
 
 #----------------------------------------------------------------------------+
-# sort_data( $column, $order, \%ary_ref )
+# sort_data( $key, $order, \%ary_ref )
 #
 # Return a sorted multi-dimensional array.
 
 sub _sort_data {
-    my ( $self, $column, $order, $ary_ref ) = @_;
+    my ( $self, $key, $order, $ary_ref ) = @_;
 
     my $alpha = 0;
 
     for (@$ary_ref) {
-        return unless defined $_->{$column};
-        $alpha = 1, last  if ($_->{$column} =~ /[^0-9 ]/);
+        return unless defined $_->{$key};
+        $alpha = 1, last  if ($_->{$key} =~ /[^0-9 ]/);
     }
 
     my @sorted;
@@ -239,11 +239,11 @@ sub _sort_data {
 
     if ($alpha) {
         @sorted =
-          sort { $dir * ($a->{$column} cmp $b->{$column}) } @$ary_ref;
+          sort { $dir * ($a->{$key} cmp $b->{$key}) } @$ary_ref;
     }
     else {
         @sorted =
-          sort { $dir * ($a->{$column} <=> $b->{$column}) } @$ary_ref;
+          sort { $dir * ($a->{$key} <=> $b->{$key}) } @$ary_ref;
     }
     return \@sorted;
 }
@@ -281,7 +281,21 @@ Logs the action including HTTP request parameters.
 
 =head2 _gen_results
 
+Generate per-page results.
+
   $self->_gen_results( $total, $start, $limit, $ary_ref );
+
+=head2 _merge_hashref
+
+Return a single reference to a hash, merge key/value pairs.
+
+  $self->_merge_hashref( \%hash1, \%hash2 );
+
+=head2 _sort_data
+
+Return a sorted multi-dimensional array.
+
+  $self->_sort_data( $column, $order, \%ary_ref );
 
 =head1 SEE ALSO
 

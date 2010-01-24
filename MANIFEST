@@ -33,6 +33,7 @@ usr/share/webapp-toolkit/extra/htdocs/admin/js/form.js
 usr/share/webapp-toolkit/extra/htdocs/admin/js/menu.js
 usr/share/webapp-toolkit/extra/htdocs/admin/js/popup.js
 usr/share/webapp-toolkit/extra/htdocs/admin/js/prompt.js
+usr/share/webapp-toolkit/extra/startup/Admin
 usr/share/webapp-toolkit/extra/templates/admin/default.tt
 usr/share/webapp-toolkit/extra/templates/admin/error.tt
 usr/share/webapp-toolkit/extra/templates/admin/frame_main.tt

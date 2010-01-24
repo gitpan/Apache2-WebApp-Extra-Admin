@@ -1,0 +1,5 @@
+Admin
+Admin::About
+Admin::Users
+Admin::Users::Add
+Admin::Users::Edit
