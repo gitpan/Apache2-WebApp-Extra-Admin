@@ -13,6 +13,7 @@ DESCRIPTION
 PREREQUISITES
       Apache2::WebApp
       Apache2::WebApp::Plugin::DateTime
+      Apache2::WebApp::Plugin::DBI
       Apache::Htpasswd
       Params::Validate
 
@@ -52,10 +53,6 @@ GETTING STARTED
   Accessing the admin control panel
       http://domain.com/app/admin
 
-   Administrator Login
-      User Name: admin
-      Password:  password
-
 SECURITY
     By default, the admin control panel is public and not secure. You can
     enable user access controls by adding the following *Apache* directives
@@ -70,8 +67,16 @@ SECURITY
 
     As always, you must restart your application for changes to take effect.
 
+ADMIN ACCESS
+    The login information below is currently set-up by default. In order to
+    manage user access this account must exist within your "htpasswd"
+
+      User Name       admin
+      Password        password
+
 SEE ALSO
-    Apache2::WebApp, Apache2::WebApp::Plugin::DateTime, Apache::Htpasswd
+    Apache2::WebApp, Apache2::WebApp::Plugin::DBI,
+    Apache2::WebApp::Plugin::DateTime, Apache::Htpasswd
 
 AUTHOR
     Marc S. Brooks, <mbrooks@cpan.org> <http://mbrooks.info>

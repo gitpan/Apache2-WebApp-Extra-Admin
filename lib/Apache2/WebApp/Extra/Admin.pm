@@ -17,7 +17,7 @@
 
 package Apache2::WebApp::Extra::Admin;
 
-our $VERSION = 0.03;
+our $VERSION = 0.04;
 
 1;
 
@@ -41,6 +41,7 @@ using the C<webapp-extra> helper script provided with the WebApp::Toolkit
 
   Apache2::WebApp
   Apache2::WebApp::Plugin::DateTime
+  Apache2::WebApp::Plugin::DBI
   Apache::Htpasswd
   Params::Validate
 
@@ -86,11 +87,6 @@ this process to insure write permission is allowed within the installation direc
 
   http://domain.com/app/admin
 
-=head3 Administrator Login
-
-  User Name: admin
-  Password:  password
-
 =head1 SECURITY
 
 By default, the admin control panel is public and not secure.  You can 
@@ -106,9 +102,18 @@ into your project C<httpd.conf>
 
 As always, you must restart your application for changes to take effect.
 
+=head1 ADMIN ACCESS
+
+The login information below is currently set-up by default.  In order to
+manage user access this account must exist within your C<htpasswd>
+
+  User Name       admin
+  Password        password
+
 =head1 SEE ALSO
 
-L<Apache2::WebApp>, L<Apache2::WebApp::Plugin::DateTime>, L<Apache::Htpasswd>
+L<Apache2::WebApp>, L<Apache2::WebApp::Plugin::DBI>,
+L<Apache2::WebApp::Plugin::DateTime>, L<Apache::Htpasswd>
 
 =head1 AUTHOR
 
