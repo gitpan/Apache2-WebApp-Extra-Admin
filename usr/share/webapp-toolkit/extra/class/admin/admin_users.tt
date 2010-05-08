@@ -53,9 +53,10 @@ sub _list_users {
         'extras/admin/users.tt',
         {
             %{ $c->config },
-            sc   => $sc,
-            so   => $so,
-            data => $self->_gen_results( $total, $start, $limit, \@$results ),
+            username => $c->request->user,
+            sc       => $sc,
+            so       => $so,
+            data     => $self->_gen_results( $total, $start, $limit, \@$results ),
         }
       )
       or $self->_error( $c, "Template process failed", $c->template->error() );
@@ -159,6 +160,8 @@ sub _get_htpasswd_data {
             $status = 'Active';
         }
 
+        $epoch ||= 110790000;    # default
+
         push( @results, {
             username => $user,
             status   => $status,
@@ -175,7 +178,7 @@ __END__
 
 =head1 NAME
 
-Users.pm
+[% project_title %]::Admin::Users - Web based admin control panel module
 
 =head1 SYNOPSIS
 
@@ -183,14 +186,40 @@ Users.pm
 
 =head1 DESCRIPTION
 
+Base class module that is used to manage admin control panel users.
 
 =head1 OBJECT METHODS
 
+=head2 _list_users
+
+List the htpasswd users.
+
+  $self->_list_users(\%controller);
+
+=head2 _get_htpasswd_data
+
+Return the htpasswd user list as a reference to an array.
+
+  $self->_get_htpasswd_data(\%controller);
+
 =head2 URI DISPATCHABLE
+
+=head2 delete
+
+Delete the user from the htpasswd file.
+
+  http://domain.com/app/admin/users/delete
+
+=head2 status
+
+Change the user status.
+
+  http://domain.com/app/admin/users/status
 
 =head1 SEE ALSO
 
-L<Apache2::WebApp>, L<Apache2::WebApp::Admin>, L<Apache::Htpasswd>
+L<Apache2::WebApp>, L<Apache2::WebApp::Admin>, L<Apache2::WebApp::Plugin::DBI>, 
+L<Apache::Htpasswd>
 
 =head1 AUTHOR
 

@@ -1,3 +1,20 @@
+#----------------------------------------------------------------------------+
+#
+#  [% project_title %]::Admin::About - Web based admin control panel module.
+#
+#  DESCRIPTION
+#  This package provides application sources for a fully functional web based
+#  admin Control Panel.  You can easily add this Extra to an existing project
+#  using the webapp-extra helper script provided with the WebApp::Toolkit
+#
+#  AUTHOR
+#  Marc S. Brooks <mbrooks@cpan.org>
+#
+#  This module is free software; you can redistribute it and/or
+#  modify it under the same terms as Perl itself.
+#
+#----------------------------------------------------------------------------+
+
 package [% project_title %]::Admin::About;
 
 use strict;
@@ -37,7 +54,7 @@ __END__
 
 =head1 NAME
 
-About.pm
+[% project_title %]::Admin::About - Web based admin control panel module
 
 =head1 SYNOPSIS
 

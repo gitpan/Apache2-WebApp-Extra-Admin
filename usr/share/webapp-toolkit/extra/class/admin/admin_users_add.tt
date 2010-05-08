@@ -114,7 +114,7 @@ __END__
 
 =head1 NAME
 
-Add.pm
+[% project_title %]::Admin::Users::Add - Web based admin control panel module
 
 =head1 SYNOPSIS
 
@@ -126,7 +126,17 @@ Add a new user entry to the htpasswd file.
 
 =head1 OBJECT METHODS
 
+View the page.
+
+  $self->_view_page( \%controller, \%param, \%error );
+
 =head2 URI DISPATCHABLE
+
+=head2 submit
+
+Validate the form input, process the request.
+
+  http://domain.com/app/admin/users/add/submit
 
 =head1 SEE ALSO
 

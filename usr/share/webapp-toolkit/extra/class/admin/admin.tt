@@ -88,6 +88,10 @@ sub _log_action {
     my $session_val =
       join( '', map { $_ . '=' . $param->{$_} . '&' } keys %$param );
 
+    if ( $c->config->{debug} ) {
+       $session_val =~ s/&(\w+?)password=(.*)//g;
+    }
+
     my $value = "$uri/?$session_val";
 
     my ( $dbh, $sth );
@@ -105,9 +109,15 @@ sub _log_action {
           });
 
         $sth->execute( $user, $action, $value, $ip );
+
+        $dbh->commit
+          if ( $c->config->{database_auto_commit} == 0 );
       };
 
     if ($@) {
+        $dbh->rollback
+          if ( $c->config->{database_auto_commit} == 0 );
+
         $self->error( $c, 'Database INSERT failed', $sth->errstr );
     }
 }
@@ -254,7 +264,7 @@ __END__
 
 =head1 NAME
 
-Admin.pm
+[% project_title %]::Admin - Web based admin control panel
 
 =head1 SYNOPSIS
 
@@ -262,10 +272,14 @@ Admin.pm
 
 =head1 DESCRIPTION
 
-Base class module that is used to load the admin Control Panel.  Also provides 
+Base class module that is used to load the admin control panel.  Also provides 
 shared functionality for installed admin extras.
 
 =head1 OBJECT METHODS
+
+=head2 _default
+
+Create the Control Panel interface.  Load the selected window into an HTML frame.
 
 =head2 _error
 
@@ -299,7 +313,7 @@ Return a sorted multi-dimensional array.
 
 =head1 SEE ALSO
 
-L<Apache2::WebApp>
+L<Apache2::WebApp>, L<Apache2::WebApp::Plugin::DBI>
 
 =head1 AUTHOR
 

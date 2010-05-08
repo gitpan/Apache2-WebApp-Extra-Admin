@@ -8,10 +8,13 @@ WriteMakefile(
     VERSION_FROM => 'lib/Apache2/WebApp/Extra/Admin.pm', # finds \$VERSION
     AUTHOR       => 'Marc S. Brooks (mbrooks@cpan.org)',
     PREREQ_PM    => {
-       'Apache2::WebApp'                   => 0.27,
+       'Apache2::WebApp'                   => 0.30,
        'Apache2::WebApp::Plugin::DateTime' => 0.05,
-    },
-);
+       'Apache2::WebApp::Plugin::DBI'      => 0.07,
+       'Apache::Htpasswd'                  => 1.8,
+       'Params::Validate'                  => 0,
+    }
+  );
 
 # Install build script template dependencies (non-standard way)
 sub MY::postamble {

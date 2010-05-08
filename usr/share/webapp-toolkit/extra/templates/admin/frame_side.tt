@@ -1,9 +1,9 @@
 [%#
-   Apache2::WebApp::Toolkit - Admin Control Panel (frame_side.tt)
-   Copyright (C) 2010 Marc S. Brooks <mbrooks@cpan.org>
+  Apache2::WebApp::Toolkit - Admin Control Panel (frame_side.tt)
+  Copyright (C) 2010 Marc S. Brooks <mbrooks@cpan.org>
 
-   Licensed under the terms of the BSD License
-   http://www.opensource.org/licenses/bsd-license.php
+  Licensed under the terms of the BSD License
+  http://www.opensource.org/licenses/bsd-license.php
 -%]
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -36,7 +36,7 @@
 </noscript>
 
 <h1 id="version">
-	[% project_title %]
+	[% project_title FILTER truncate(12, '..') %]
 
 		<br />
 
@@ -65,19 +65,18 @@
 </div>
 [% END %]
 
-[% admin = (username == 'admin') ? 1 : 0 %]
+[%
+	admin = (username == 'admin') ? 1 : 0;
+	count = 0
+%]
 
 [% FOREACH file = dir.dirs %]
-
-[% UNLESS file.name == 'admin' %]
-[% INCLUDE "extras/$file.name/menu.tt", number = (loop.count + admin) %]
+[% NEXT IF file.name == 'admin' %]
+[% count = count + 1 %]
+[% INCLUDE "extras/$file.name/menu.tt", number = (count + admin) %]
 [% END %]
 
-[% IF loop.last %]
-[% INCLUDE "extras/admin/menu.tt", number = (loop.count + admin) %]
-[% END %]
-
-[% END %]
+[% INCLUDE "extras/admin/menu.tt", number = (dir.dirs.size + admin) %]
 
 </div>
 
@@ -92,7 +91,7 @@ window.onload = function() {
 
 <!-- do not remove - use 'display: none' instead -->
 
-<p id="copy">
+<p id="copy" style="display:none">
 	<span>Apache2 WebApp::Toolkit</span>
 
 		<br />

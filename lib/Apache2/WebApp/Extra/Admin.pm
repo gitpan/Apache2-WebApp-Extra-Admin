@@ -17,7 +17,7 @@
 
 package Apache2::WebApp::Extra::Admin;
 
-our $VERSION = 0.02;
+our $VERSION = 0.03;
 
 1;
 
@@ -41,6 +41,8 @@ using the C<webapp-extra> helper script provided with the WebApp::Toolkit
 
   Apache2::WebApp
   Apache2::WebApp::Plugin::DateTime
+  Apache::Htpasswd
+  Params::Validate
 
 =head1 INSTALLATION
 
@@ -84,6 +86,11 @@ this process to insure write permission is allowed within the installation direc
 
   http://domain.com/app/admin
 
+=head3 Administrator Login
+
+  User Name: admin
+  Password:  password
+
 =head1 SECURITY
 
 By default, the admin control panel is public and not secure.  You can 
@@ -101,7 +108,7 @@ As always, you must restart your application for changes to take effect.
 
 =head1 SEE ALSO
 
-L<Apache2::WebApp>, L<Apache2::WebApp::Plugin::DateTime>
+L<Apache2::WebApp>, L<Apache2::WebApp::Plugin::DateTime>, L<Apache::Htpasswd>
 
 =head1 AUTHOR
 

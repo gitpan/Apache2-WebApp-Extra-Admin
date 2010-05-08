@@ -73,7 +73,7 @@
 			Click your browser's BACK button to return to the previous page.
 		</li>
 		<li>
-			Click <a href="javascript:window.history.go(-1)" title="Back">here</a> to go to the [% domain %] homepage.
+			Click <a href="javascript:window.history.go(-1)" title="Back">here</a> to go to the [% apache_domain FILTER upper %] homepage.
 		</li>
 		<li>
 			If you continue to experience this error, contact <a href="mailto:[% project_email %]">Support</a> to report it.

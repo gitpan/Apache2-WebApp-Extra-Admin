@@ -112,7 +112,7 @@ __END__
 
 =head1 NAME
 
-Edit.pm
+[% project_title %]::Admin::Users::Edit - Web based admin control panel module
 
 =head1 SYNOPSIS
 
@@ -124,7 +124,17 @@ Edit an existing htpasswd user entry.
 
 =head1 OBJECT METHODS
 
+View the page.
+
+  $self->_view_page( \%controller, \%param, \%error );
+
 =head2 URI DISPATCHABLE
+
+=head2 submit
+
+Validate the form input, process the request.
+
+  http://domain.com/app/admin/users/edit/submit
 
 =head1 SEE ALSO
 
