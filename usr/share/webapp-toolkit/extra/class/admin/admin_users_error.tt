@@ -42,11 +42,11 @@ require Exporter;
   ERROR_USERNAME
   ERROR_USERNAME_DOESNT_EXIST
   ERROR_USERNAME_IN_USE
-);
+  );
 
 %EXPORT_TAGS = (
     all => \@EXPORT_OK,
-);
+  );
 
 1;
 

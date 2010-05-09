@@ -17,7 +17,7 @@
 
 package Apache2::WebApp::Extra::Admin;
 
-our $VERSION = 0.04;
+our $VERSION = 0.05;
 
 1;
 
@@ -29,7 +29,7 @@ Apache2::WebApp::Extra::Admin - Web based admin control panel
 
 =head1 SYNOPSIS
 
-This module should not be used directly.
+This module should NOT be used directly.
 
 =head1 DESCRIPTION
 
@@ -83,7 +83,7 @@ this process to insure write permission is allowed within the installation direc
 
   $ webapp-kickstart
 
-=head2 Accessing the admin control panel
+=head3 Accessing the admin control panel
 
   http://domain.com/app/admin
 
