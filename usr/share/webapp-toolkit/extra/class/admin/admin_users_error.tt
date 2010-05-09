@@ -14,9 +14,6 @@ use constant ERROR_FORM_INPUT =>
 use constant ERROR_PASSWORD =>
     "Must be between 8 and 15 alphanumeric characters";
 
-use constant ERROR_PASSWORD_INCORRECT =>
-    "The password entered for this account is incorrect";
-
 use constant ERROR_REQUIRED =>
     "Required information";
 
@@ -26,7 +23,7 @@ use constant ERROR_USERNAME =>
 use constant ERROR_USERNAME_DOESNT_EXIST =>
     "The username selected doesn't exist";
 
-use constant ERROR_USERNAME_IN_USE =>
+use constant ERROR_USERNAME_EXISTS =>
     "The username selected is already in use";
 
 use vars qw( @ISA @EXPORT_OK %EXPORT_TAGS );
@@ -37,11 +34,10 @@ require Exporter;
 @EXPORT_OK = qw(
   ERROR_FORM_INPUT
   ERROR_PASSWORD
-  ERROR_PASSWORD_INCORRECT
   ERROR_REQUIRED
   ERROR_USERNAME
   ERROR_USERNAME_DOESNT_EXIST
-  ERROR_USERNAME_IN_USE
+  ERROR_USERNAME_EXISTS
   );
 
 %EXPORT_TAGS = (

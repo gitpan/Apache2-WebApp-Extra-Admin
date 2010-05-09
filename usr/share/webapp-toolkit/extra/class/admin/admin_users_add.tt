@@ -69,7 +69,7 @@ sub submit {
         }
         else {
             if ( $pwd->fetchPass( $param{username} ) ) {
-                $error{username} = ERROR_USERNAME_IN_USE;
+                $error{username} = ERROR_USERNAME_EXISTS;
             }
         }
     }
