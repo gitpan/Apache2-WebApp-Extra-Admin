@@ -179,7 +179,7 @@ function startWith(num) {
 
 			&#124;
 
-			<a [% IF username != 'admin' %]onClick="confirmDelete('[% row.username %]','/app/admin/users/delete/?username=[% row.username %]&sc=[% sc %]&so=[% so %]&start=[% start %]')" title="Delete &#040;[% row.username %]&#041;"[% ELSE %]style="color: #CCCCCC"[% END %]>
+			<a [% IF row.username != 'admin' %]onClick="confirmDelete('[% row.username %]','/app/admin/users/delete/?username=[% row.username %]&sc=[% sc %]&so=[% so %]&start=[% start %]')" title="Delete &#040;[% row.username %]&#041;"[% ELSE %]style="color: #CCCCCC"[% END %]>
 				Delete
 			</a>
 		</td>
@@ -190,7 +190,7 @@ function startWith(num) {
 			<form>
 
 			<select style="width:100px" onChange="window.open( '/app/admin/users/status/?username=[% row.username %]&value=' + th
-is.value + '&sc=[% sc %]&so=[% so %]&start=[% start %]', '_self' )" [% IF username == 'admin' %]disabled=true[% END %]
+is.value + '&sc=[% sc %]&so=[% so %]&start=[% start %]', '_self' )" [% IF row.username == 'admin' %]disabled=true[% END %]
 				<option value="Disabled" [% IF row.status == 'Disabled' %]selected[% END %]>Disabled</option>
 				<option value="Active" [% IF row.status == 'Active' %]selected[% END %]>Active</option>
 			</select>

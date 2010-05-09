@@ -17,7 +17,7 @@
 
 package Apache2::WebApp::Extra::Admin;
 
-our $VERSION = 0.06;
+our $VERSION = 0.07;
 
 1;
 

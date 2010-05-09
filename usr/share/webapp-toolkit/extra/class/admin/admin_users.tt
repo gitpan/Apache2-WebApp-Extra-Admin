@@ -53,10 +53,9 @@ sub _list_users {
         'extras/admin/users.tt',
         {
             %{ $c->config },
-            username => $c->request->user,
-            sc       => $sc,
-            so       => $so,
-            data     => $self->_gen_results( $total, $start, $limit, \@$results ),
+            sc   => $sc,
+            so   => $so,
+            data => $self->_gen_results( $total, $start, $limit, \@$results ),
         }
       )
       or $self->_error( $c, "Template process failed", $c->template->error() );
@@ -81,6 +80,8 @@ sub delete {
     my @users = $pwd->fetchUsers();
 
     foreach (@users) {
+        next if ($username eq 'admin');     # always exclude
+
         $pwd->htDelete($_) if (/^(?:|\#)$username/i);
     }
 
@@ -109,6 +110,8 @@ sub status {
 
     foreach (@lines) {
         chomp;
+
+        next if ($username eq 'admin');
 
         if (/^(?:|\#)$username/i) {
             if (/^#/) {
