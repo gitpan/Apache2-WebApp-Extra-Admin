@@ -12,13 +12,13 @@ use constant ERROR_FORM_INPUT =>
     "ERROR: The highlighted form fields contain errors";
 
 use constant ERROR_PASSWORD =>
-    "Must be between 8 and 15 alphanumeric characters";
+    "Must be between 8 and 15 characters";
 
 use constant ERROR_REQUIRED =>
     "Required information";
 
 use constant ERROR_USERNAME =>
-    "Must be between 5 and 15 alphanumeric characters";
+    "Must be between 6 and 15 alphanumeric characters";
 
 use constant ERROR_USERNAME_DOESNT_EXIST =>
     "The username selected doesn't exist";

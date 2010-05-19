@@ -1,4 +1,4 @@
-package [% project_title %]::Admin::Users::Add;
+package [% project_title %]::Admin::Users::Edit;
 
 use strict;
 #use warnings;     # debug
@@ -32,6 +32,8 @@ sub _default {
 sub _view_page {
     my ( $self, $c, $param_ref, $error_ref ) = @_;
 
+    $param_ref->{username} = $c->request->param('username');
+
     $c->request->content_type('text/html');
 
     $c->template->process(
@@ -40,6 +42,7 @@ sub _view_page {
             %{ $c->config },
             param => ($param_ref) ? $param_ref : undef,
             error => ($error_ref) ? $error_ref : undef,
+            edit  => 1
         }
       )
       or $self->_error( $c, "Template process failed", $c->template->error() );
@@ -63,13 +66,13 @@ sub submit {
 
     # check the username field data
     if ( $param{username} ) {
-        unless ( $param{username} =~ /\A (?: \w){5,15} \z/x )
+        unless ( $param{username} =~ /\A (?: \w|\s|\-|\_){6,15} \z/x )
         {
             $error{username} = ERROR_USERNAME;
         }
         else {
-            if ( $pwd->fetchPass( $param{username} ) ) {
-                $error{username} = ERROR_USERNAME_EXISTS;
+            if ( !$pwd->fetchPass( $param{username} ) ) {
+                $error{username} = ERROR_USERNAME_DOESNT_EXIST;
             }
         }
     }
@@ -90,11 +93,7 @@ sub submit {
 
     unless (values %error) {
 
-        $param{username} =~ s/(\w+)/\#$1/gi;
-
-        $pwd->htpasswd( $param{username}, $param{password} );
-
-        $pwd->writeInfo( $param{username}, time() );
+        $pwd->htpasswd( $param{username}, $param{password}, { overwrite => 1 } );
 
         # list the users
         $self->_list_users($c);
@@ -114,15 +113,15 @@ __END__
 
 =head1 NAME
 
-[% project_title %]::Admin::Users::Add - Web based admin control panel module
+[% project_title %]::Admin::Users::Edit - Web based admin control panel module
 
 =head1 SYNOPSIS
 
-  use [% project_title %]::Admin::Users::Add;
+  use [% project_title %]::Admin::Users::Edit;
 
 =head1 DESCRIPTION
 
-Add a new user entry to the htpasswd file.
+Edit an existing htpasswd user entry.
 
 =head1 OBJECT METHODS
 
@@ -136,7 +135,7 @@ View the page.
 
 Validate the form input, process the request.
 
-  http://domain.com/app/admin/users/add/submit
+  http://domain.com/app/admin/users/edit/submit
 
 =head1 SEE ALSO
 

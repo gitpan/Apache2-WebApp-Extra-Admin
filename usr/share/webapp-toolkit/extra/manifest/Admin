@@ -1,12 +1,3 @@
-INSTALL
-LICENSE
-MANIFEST
-README
-Changes
-Makefile.PL
-META.yml
-preview.jpg
-lib/Apache2/WebApp/Extra/Admin.pm
 usr/share/webapp-toolkit/extra/class/admin.tt
 usr/share/webapp-toolkit/extra/class/admin_about.tt
 usr/share/webapp-toolkit/extra/class/admin_users_add.tt
@@ -34,7 +25,6 @@ usr/share/webapp-toolkit/extra/htdocs/admin/js/form.js
 usr/share/webapp-toolkit/extra/htdocs/admin/js/menu.js
 usr/share/webapp-toolkit/extra/htdocs/admin/js/popup.js
 usr/share/webapp-toolkit/extra/htdocs/admin/js/prompt.js
-usr/share/webapp-toolkit/extra/manifest/Admin
 usr/share/webapp-toolkit/extra/startup/Admin
 usr/share/webapp-toolkit/extra/templates/admin/default.tt
 usr/share/webapp-toolkit/extra/templates/admin/error.tt

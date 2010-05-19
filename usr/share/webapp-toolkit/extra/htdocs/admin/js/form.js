@@ -62,7 +62,6 @@ function countForms() {
 
 function eventFieldError() {
 	var elm = document.getElementsByTagName('*');
-
 	var obj = document.getElementById('alert');
 
 	var error;
@@ -70,16 +69,16 @@ function eventFieldError() {
 	for ( var i = 0; i < elm.length; i++ ) {
 		if (elm[i].className.match(/error/)) {
 			elm[i].onmouseover = function (e) {
-				error		 = obj.innerHTML;
+				error = obj.innerHTML;
 				obj.innerHTML = this.title;
 				this.style.backgroundColor = "#FF0000";
-				this.style.color		   = "#FFFFFF";
+				this.style.color           = "#FFFFFF";
 			}
 
 			elm[i].onmouseout = function (e) {
 				obj.innerHTML = error;
 				this.style.backgroundColor = "#FFFFFF";
-				this.style.color		   = "#FF0000";
+				this.style.color           = "#FF0000";
 			}
 		}
 	}

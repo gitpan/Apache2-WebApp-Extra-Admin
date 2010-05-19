@@ -19,7 +19,7 @@
 
 	<style type="text/css">
 		@import url( /extras/admin/css/base.css );
-		@import url( /extras/admin/css/page.css );
+		@import url( /extras/admin/css/content.css );
 	</style>
 </head>
 <body>

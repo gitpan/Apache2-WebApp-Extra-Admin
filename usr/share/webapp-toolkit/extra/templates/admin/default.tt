@@ -15,13 +15,18 @@
 
 	<meta http-equiv="pragma" content="no-cache" />
 
+	<script type="text/javascript" src="/extras/admin/js/cookie.js"></script>
 	<script type="text/javascript" src="/extras/admin/js/disable.js"></script>
+	<script type="text/javascript" src="/extras/admin/js/menu.js"></script>
 
 	<style type="text/css">
 		@import url( /extras/admin/css/base.css );
-		@import url( /extras/admin/css/page.css );
+		@import url( /extras/admin/css/content.css );
 	</style>
 </head>
+
+[% USE dir = Directory("$apache_doc_root/templates/extras") %]
+
 <body>
 
 <noscript>
@@ -62,6 +67,32 @@
 
 <!-- error begin -->
 [% END %]
+
+<!-- info begin -->
+
+<div id="info">
+	<p class="text">
+		Get started by selecting one of the options below.
+	</p>
+
+	<br />
+
+[%
+	admin = (username == 'admin') ? 1 : 0;
+	count = 1
+%]
+
+[% FOREACH file = dir.dirs %]
+[% NEXT IF file.name == 'admin' %]
+[% INCLUDE "extras/$file.name/panel.tt", number = (count + admin) %]
+[% END %]
+
+[% INCLUDE "extras/admin/panel.tt", number = (dir.dirs.size + admin) %]
+
+</div>
+
+<!-- info end -->
+
 
 </body>
 </html>

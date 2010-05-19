@@ -126,10 +126,6 @@
 	padding: 1px;
 }
 
-#form div.check span {
-	vertical-align: 3px;
-}
-
 #form div.check0 {
 	margin: 20px 0px 20px 0px;
 	text-align: center;
@@ -223,8 +219,6 @@
 
 #form input.error , select.error, textarea.error {
 	background-color: #FFFFFF;
-	border: 2px solid #FF0000;
 	color: #FF0000;
 	cursor: pointer;
-	margin: 4px;
 }

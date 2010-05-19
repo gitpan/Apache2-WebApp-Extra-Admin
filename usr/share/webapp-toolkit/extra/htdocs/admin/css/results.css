@@ -157,7 +157,6 @@ html, body {
 
 #navtop {
 	height: 50px;
-	left: -4px;
 	position: relative;
 	top: 10px;
 	width: 100%;
@@ -165,6 +164,7 @@ html, body {
 
 #navtop div.options {
 	float: right;
+	margin-right: 3px;
 }
 
 #navtop div.options span {

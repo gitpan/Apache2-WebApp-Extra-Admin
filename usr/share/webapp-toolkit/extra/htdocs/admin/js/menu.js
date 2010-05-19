@@ -8,6 +8,38 @@
 
 var menu_total;
 
+function initMenus(total) {
+	var last = getCookie('last');
+
+	menu_total = total;
+
+	if (last) {
+		viewOptions(last);
+	}
+	else {
+		if (total < 2) {    // Control Panel & About menus
+			resetMenu();
+		}
+		else {
+			viewOptions('menu_1');
+		}
+	}
+}
+
+function loadMenu(mode) {
+	var last = getCookie('last');
+    
+	if (last != mode) {
+        parent.side.viewOptions(mode);
+    }
+}
+
+function resetMenu() {
+	for ( var i = 1; i <= menu_total; i++ ) {
+		document.getElementById( 'menu_' + i ).style.display = 'none';
+	}
+}
+
 function viewOptions(mode) {
 	var obj = document.getElementById(mode);
 
@@ -22,24 +54,5 @@ function viewOptions(mode) {
 		obj.style.display = 'block';
 
 		setCookie('last', mode);
-	}
-}
-
-function loadMenu(total) {
-	var last = getCookie('last');
-
-	menu_total = total;
-
-	if (last) {
-		viewOptions(last);
-	}
-	else {
-		viewOptions('menu_1');
-	}
-}
-
-function resetMenu() {
-	for ( var i = 1; i <= menu_total; i++ ) {
-		document.getElementById( 'menu_' + i ).style.display = 'none';
 	}
 }

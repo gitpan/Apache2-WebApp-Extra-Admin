@@ -17,7 +17,7 @@
 </head>
 
 <frameset cols="133, *" border="0" noresize>
-	<frame src="/app/admin/?load=side" scrolling="no" />
+	<frame src="/app/admin/?load=side" name="side" scrolling="no" />
 
 	<frameset rows="50, *" border="0" noresize>
 		<frame src="/app/admin/?load=top" scrolling="no" />

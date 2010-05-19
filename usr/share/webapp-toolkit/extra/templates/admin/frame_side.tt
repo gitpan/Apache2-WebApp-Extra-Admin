@@ -15,9 +15,9 @@
 
 	<meta http-equiv="pragma" content="no-cache" />
 
+	<script type="text/javascript" src="/extras/admin/js/disable.js"></script>
 	<script type="text/javascript" src="/extras/admin/js/cookie.js"></script>
 	<script type="text/javascript" src="/extras/admin/js/menu.js"></script>
-	<script type="text/javascript" src="/extras/admin/js/disable.js"></script>
 
 	<style type="text/css">
 		@import url( /extras/admin/css/base.css );
@@ -37,32 +37,29 @@
 
 <h1 id="version">
 	[% project_title FILTER truncate(12, '..') %]
-
 		<br />
-
 	<small>v[% project_version %]</small>
 </h1>
 
 <div id="menu">
+	<div class="button">
+		<a href="/app/admin/?load=default" target="main" [% IF username == 'admin' %]onClick="viewOptions('menu_1')"[% END %]>
+			<strong>
+				Control Panel
+			</strong>
+		</a>
+	</div>
 
 [% IF username == 'admin' %]
-<div class="button">
-	<a href="/app/admin/?load=default" target="main" onClick="viewOptions('menu_1')">
-		<strong>
-			Control Panel
-		</strong>
-	</a>
-</div>
-
-<div id="menu_1" class="menu">
-	<ul class="options">
-		<li>
-			<a href="/app/admin/users" target="main">
-				Users
-			</a>
-		</li>
-	</ul>
-</div>
+	<div id="menu_1" class="menu">
+		<ul class="options">
+			<li>
+				<a href="/app/admin/users" target="main">
+					Users
+				</a>
+			</li>
+		</ul>
+	</div>
 [% END %]
 
 [%
@@ -83,7 +80,7 @@
 <script type="text/javascript">
 <!--//
 window.onload = function() {
-	loadMenu([% dir.dirs.size + admin %]);
+	initMenus([% dir.dirs.size + admin %]);
 };
 //-->
 </script>
@@ -93,9 +90,7 @@ window.onload = function() {
 
 <p id="copy" style="display:none">
 	<span>Apache2 WebApp::Toolkit</span>
-
 		<br />
-
 	by: <a href="http://search.cpan.org/~mbrooks/" target="_new">Marc S. Brooks</a>
 </p>
 

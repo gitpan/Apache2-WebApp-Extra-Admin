@@ -17,7 +17,7 @@
 
 package Apache2::WebApp::Extra::Admin;
 
-our $VERSION = 0.07;
+our $VERSION = 0.08;
 
 1;
 
@@ -41,7 +41,7 @@ using the C<webapp-extra> helper script provided with the WebApp::Toolkit
 
   Apache2::WebApp
   Apache2::WebApp::Plugin::DateTime
-  Apache2::WebApp::Plugin::DBI
+  Apache2::WebApp::Plugin::DBI (optional)
   Apache::Htpasswd
   Params::Validate
 

@@ -11,10 +11,8 @@
 
 #info {
 	float: left;
-	font-size: 12px;
 	margin-bottom: 10px;
 	position: relative;
-	width: 475px;
 }
 
 
@@ -29,11 +27,17 @@
 
 #info p.text, #info p.text_center {
 	display: block;
-	padding: 6px;
+	padding-top: 10px;
+}
+
+#info p.text {
+	text-align: center;
+	padding-right: 6px;
 }
 
 #info p.text_center {
 	text-align: center;
+	width: 480px;
 }
 
 #info div.html {
@@ -138,4 +142,64 @@
 
 #info div.top a {
 	color: #999999;
+}
+
+/*--------------------------------------------------------------------------*/
+/* page - container                                                         */
+
+#page {
+	clear: both;
+	left: -4px;
+	position: relative;
+}
+
+#page a:hover {
+	background-color: transparent;
+}
+
+
+/* page - title text */
+
+#page h2.title {
+	font-weight: bold;
+}
+
+#page h2.title {
+	font-size: 20px;
+	padding: 3px;
+}
+
+
+/* page - back */
+
+#page div.back {
+	float: right;
+	position: relative;
+}
+
+#page div.back a {
+	background-image: url( /extras/admin/images/back.gif );
+	background-repeat: no-repeat;
+	display: block;
+	height: 24px;
+	padding-left: 35px;
+	padding-top: 4px;
+	text-align: right;
+}
+
+
+/* page - print */
+
+#page div.print {
+	float: right;
+}
+
+#page div.print a {
+	background-image: url( /extras/admin/images/print.gif );
+	background-repeat: no-repeat;
+	display: block;
+	height: 24px;
+	padding-left: 35px;
+	padding-top: 4px;
+	text-align: right;
 }

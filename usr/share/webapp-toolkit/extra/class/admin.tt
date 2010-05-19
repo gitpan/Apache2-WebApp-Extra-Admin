@@ -73,7 +73,7 @@ sub _error {
 sub _log_action {
     my ( $self, $c, $action )
       = validate_pos( @_,
-          { type => SCALAR  },
+          { type => OBJECT | SCALAR },
           { type => HASHREF },
           { type => SCALAR  }
           );
@@ -112,7 +112,7 @@ sub _log_action {
 
         $dbh->commit
           if ( $c->config->{database_auto_commit} == 0 );
-      };
+    };
 
     if ($@) {
         $dbh->rollback
@@ -130,7 +130,7 @@ sub _log_action {
 sub _gen_results {
     my ( $self, $total, $start, $limit, $ary_ref )
       = validate_pos( @_,
-          { type => SCALAR   },
+          { type => OBJECT | SCALAR },
           { type => SCALAR   },
           { type => SCALAR   },
           { type => SCALAR   },

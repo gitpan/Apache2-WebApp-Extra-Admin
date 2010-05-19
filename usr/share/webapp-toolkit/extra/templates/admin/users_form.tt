@@ -15,14 +15,13 @@
 
 	<meta http-equiv="pragma" content="no-cache" />
 
-	<script type="text/javascript" src="/extras/admin/js/form.js"></script>
 	<script type="text/javascript" src="/extras/admin/js/disable.js"></script>
+	<script type="text/javascript" src="/extras/admin/js/form.js"></script>
 
 	<style type="text/css">
 		@import url( /extras/admin/css/base.css );
 		@import url( /extras/admin/css/content.css );
 		@import url( /extras/admin/css/form.css );
-		@import url( /extras/admin/css/page.css );
 	</style>
 </head>
 <body onLoad="requireFields([% UNLESS param.username && !error.username %]'username',[% END %]'password'); focusFirstField()">
@@ -44,7 +43,7 @@
 	</div>
 
 	<h2 class="title">
-		[% IF param.username && !error.username %]Edit User[% ELSE %]Add User[% END %]
+		[% IF edit %]Edit User[% ELSE %]Add User[% END %]
 	</h2>
 </div>
 
@@ -60,7 +59,7 @@
 
 <div id="info">
 	<p class="text_center">
-		Fill out the form info below.  Fields marked with an asterisk (*) are required.
+		Fill out the form info below.  Fields marked with a (&bull;) are required.
 	</p>
 </div>
 
@@ -81,7 +80,7 @@
 
 <!-- form begin -->
 
-<form method="post" action="/app/admin/users/[% IF param.username && !error.username %]edit[% ELSE %]add[% END %]/submit">
+<form method="post" action="/app/admin/users/[% IF edit %]edit[% ELSE %]add[% END %]/submit">
 
 <div id="form">
 	<fieldset>
@@ -89,10 +88,10 @@
 			Login Info
 		</legend>
 
-	[% UNLESS param.username && !error.username %]
+	[% UNLESS edit %]
 		<label>
 			<strong>
-				&#042; User Name
+				&bull; User Name
 			</strong>
 		</label>
 
@@ -102,7 +101,7 @@
 	[% ELSE %]
 		<label>
 			<strong>
-				&#042; User Name
+				&bull; User Name
 			</strong>
 		</label>
 
@@ -113,7 +112,7 @@
 
 		<label>
 			<strong>
-				&#042; [% IF param.username && !error.username %]New [% END %]Password
+				&bull; [% IF edit %]New [% END %]Password
 			</strong>
 		</label>
 
@@ -127,7 +126,7 @@
 	</fieldset>
 
 	<div>
-		<input id="allow" class="button0" type="submit" value="Submit" />
+		<input id="allow" class="button0" type="submit" value="[% IF edit %]Save Changes[% ELSE %]Submit[% END %]" />
 	</div>
 </div>
 

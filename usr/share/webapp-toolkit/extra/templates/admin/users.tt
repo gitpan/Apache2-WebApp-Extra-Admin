@@ -15,13 +15,13 @@
 
 	<meta http-equiv="pragma" content="no-cache" />
 
-	<script type="text/javascript" src="/extras/admin/js/prompt.js"></script>
 	<script type="text/javascript" src="/extras/admin/js/disable.js"></script>
+	<script type="text/javascript" src="/extras/admin/js/prompt.js"></script>
 
 	<style type="text/css">
 		@import url( /extras/admin/css/base.css );
+		@import url( /extras/admin/css/content.css );
 		@import url( /extras/admin/css/form.css );
-		@import url( /extras/admin/css/page.css );
 		@import url( /extras/admin/css/results.css );
 	</style>
 </head>
@@ -64,7 +64,6 @@
 	<!-- results begin -->
 
 	<div class="results">
-		&gt;
 
 	[% IF data.results.total %]
 		Listing [% data.results.first %] - [% data.results.last %] of [% data.results.total %] users
@@ -189,8 +188,7 @@ function startWith(num) {
 		<td class="right">
 			<form>
 
-			<select style="width:100px" onChange="window.open( '/app/admin/users/status/?username=[% row.username %]&value=' + th
-is.value + '&sc=[% sc %]&so=[% so %]&start=[% start %]', '_self' )" [% IF row.username == 'admin' %]disabled=true[% END %]
+			<select style="width:100px" onChange="window.open( '/app/admin/users/status/?username=[% row.username %]&value=' + this.value + '&sc=[% sc %]&so=[% so %]&start=[% start %]', '_self' )" [% IF row.username == 'admin' %]disabled=true[% END %]
 				<option value="Disabled" [% IF row.status == 'Disabled' %]selected[% END %]>Disabled</option>
 				<option value="Active" [% IF row.status == 'Active' %]selected[% END %]>Active</option>
 			</select>
