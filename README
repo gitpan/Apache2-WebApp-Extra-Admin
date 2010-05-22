@@ -75,13 +75,13 @@ ADMIN ACCESS
       Password        password
 
 OPTIONAL
-    If database support is available, you can log control panel user actions
-    to a MySQL database. The database table to store logging information is
-    auto-generated. Since this is the case, the MySQL user must have CREATE
+    If database support is available, you can log control panel user actions 
+    to a database.  The database table to store logging information is 
+    auto-generated.  Since this is the case, the SQL user must have CREATE 
     privileges.
 
-    In case you want to manually create this table, you can run the
-    following SQL statement on the MySQL command-line:
+    In case you want to manually create this table, you can run the following
+    SQL statement on the database command-line:
 
       CREATE TABLE IF NOT EXISTS admin_log (
           admin_log_id int(3) NOT NULL AUTO_INCREMENT,
@@ -92,6 +92,10 @@ OPTIONAL
           admin_log_created datetime DEFAULT NULL,
           PRIMARY KEY (admin_log_id)
         );
+
+    If a database is not available at the time data is collected, this 
+    information will be written to a file that can be located in your project 
+    "logs" directory.
 
 DEBUG MODE
     If debugging is enabled, the URI and query string are logged. This can

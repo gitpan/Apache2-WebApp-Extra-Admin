@@ -1,13 +1,13 @@
 --- #YAML:1.0
 name: Apache2::WebApp::Extra::Admin
 abstract: Web based admin control panel
-version: 0.09
+version: 0.10
 author:
   - Marc S. Brooks <mbrooks@cpan.org>
 license: perl and artistic
 distribution_type: module
 requires:
-  Apache2::WebApp: 0.34
+  Apache2::WebApp: 0.35
   Apache2::WebApp::Plugin::DateTime: 0.05
   Apache2::WebApp::Plugin::DBI: 0.08
   Apache::Htpasswd: 1.8
@@ -15,10 +15,8 @@ requires:
 build_requires:
 no_index:
   directory:
+    - preview
     - usr
-  file:
-    - preview1.jpg
-    - preview2.jpg
 resources:
   license: http://dev.perl.org/licenses/
 meta-spec:

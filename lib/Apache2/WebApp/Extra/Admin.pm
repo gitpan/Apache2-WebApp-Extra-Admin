@@ -17,7 +17,7 @@
 
 package Apache2::WebApp::Extra::Admin;
 
-our $VERSION = 0.09;
+our $VERSION = 0.10;
 
 1;
 
@@ -113,12 +113,12 @@ manage user access this account must exist within your C<htpasswd>
 =head1 OPTIONAL
 
 If database support is available, you can log control panel user actions 
-to a MySQL database.  The database table to store logging information is 
-auto-generated.  Since this is the case, the MySQL user must have CREATE 
+to a database.  The database table to store logging information is 
+auto-generated.  Since this is the case, the SQL user must have CREATE 
 privileges.
 
 In case you want to manually create this table, you can run the following
-SQL statement on the MySQL command-line:
+SQL statement on the database command-line:
 
   CREATE TABLE IF NOT EXISTS admin_log (
       admin_log_id int(3) NOT NULL AUTO_INCREMENT,
@@ -129,6 +129,10 @@ SQL statement on the MySQL command-line:
       admin_log_created datetime DEFAULT NULL,
       PRIMARY KEY (admin_log_id)
     );
+
+If a database is not available at the time data is collected, this 
+information will be written to a file that can be located in your project 
+C<logs> directory.
 
 =head1 DEBUG MODE
 
