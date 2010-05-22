@@ -3,10 +3,13 @@ package [% project_title %]::Admin::Users::Error;
 use strict;
 #use warnings;     # debug
 
-our $VERSION = 0.01;
+our $VERSION = 0.09;
 
 #----------------------------------------------------------------------------+
 # Constants to be exported.
+
+use constant ERROR_ACCESS_DENIED =>
+    "Access denied";
 
 use constant ERROR_FORM_INPUT =>
     "ERROR: The highlighted form fields contain errors";
@@ -18,7 +21,7 @@ use constant ERROR_REQUIRED =>
     "Required information";
 
 use constant ERROR_USERNAME =>
-    "Must be between 6 and 15 alphanumeric characters";
+    "Must be between 5 and 15 alphanumeric characters";
 
 use constant ERROR_USERNAME_DOESNT_EXIST =>
     "The username selected doesn't exist";
@@ -32,6 +35,7 @@ require Exporter;
 
 @ISA       = qw( Exporter );
 @EXPORT_OK = qw(
+  ERROR_ACCESS_DENIED
   ERROR_FORM_INPUT
   ERROR_PASSWORD
   ERROR_REQUIRED

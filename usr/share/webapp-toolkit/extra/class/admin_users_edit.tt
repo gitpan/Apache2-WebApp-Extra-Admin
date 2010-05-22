@@ -4,7 +4,7 @@ use strict;
 #use warnings;     # debug
 use Apache::Htpasswd;
 
-our $VERSION = 0.01;
+our $VERSION = 0.09;
 
 use base qw(
   [% project_title %]::Admin
@@ -20,6 +20,8 @@ use [% project_title %]::Admin::Users::Error qw( :all );
 
 sub _default {
     my ( $self, $c ) = @_;
+
+    $self->_error( $c, ERROR_ACCESS_DENIED ) unless ($c->request->user);
 
     $self->_view_page($c);
 }
@@ -66,12 +68,14 @@ sub submit {
 
     # check the username field data
     if ( $param{username} ) {
-        unless ( $param{username} =~ /\A (?: \w|\s|\-|\_){6,15} \z/x )
+        unless ( $param{username} =~ /\A (?: \w|\s|\-|\_){5,15} \z/x )
         {
             $error{username} = ERROR_USERNAME;
         }
         else {
-            if ( !$pwd->fetchPass( $param{username} ) ) {
+            if ( !$pwd->fetchPass(       $param{username} ) &&
+                 !$pwd->fetchPass( '#' . $param{username} ) )
+            {
                 $error{username} = ERROR_USERNAME_DOESNT_EXIST;
             }
         }
@@ -94,6 +98,8 @@ sub submit {
     unless (values %error) {
 
         $pwd->htpasswd( $param{username}, $param{password}, { overwrite => 1 } );
+
+        $self->_log_action( $c, 'Edit admin user - ' . $param{username} );
 
         # list the users
         $self->_list_users($c);

@@ -5,7 +5,8 @@ README
 Changes
 Makefile.PL
 META.yml
-preview.jpg
+preview1.jpg
+preview2.jpg
 lib/Apache2/WebApp/Extra/Admin.pm
 usr/share/webapp-toolkit/extra/class/admin.tt
 usr/share/webapp-toolkit/extra/class/admin_about.tt

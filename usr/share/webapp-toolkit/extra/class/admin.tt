@@ -4,7 +4,7 @@ use strict;
 #use warnings;     # debug
 use Params::Validate qw( :all );
 
-our $VERSION = 0.01;
+our $VERSION = 0.09;
 
 use base qw(
   [% project_title %]::Base
@@ -57,7 +57,7 @@ sub _error {
         {
             %{ $c->config },
             title  => $title,
-            output => ( $c->config->{debug} == 1 ) ? $value : undef,
+            output => ($c->config->{debug} == 1) ? $value : undef,
         }
       )
       or die $c->template->error();
@@ -88,38 +88,72 @@ sub _log_action {
     my $session_val =
       join( '', map { $_ . '=' . $param->{$_} . '&' } keys %$param );
 
-    if ( $c->config->{debug} ) {
-       $session_val =~ s/&(\w+?)password=(.*)//g;
-    }
-
-    my $value = "$uri/?$session_val";
+    # log the URI and GET/POST parameters
+    my $string = ($c->config->{debug} == 1) ? "$uri/?$session_val" : '';
 
     my ( $dbh, $sth );
 
     $dbh = $c->stash('DBH');
 
-    eval {
-        $sth = $dbh->prepare(qq{
-            INSERT INTO log_admin SET
-                log_admin_username     = ?,
-                log_admin_action       = ?,
-                log_admin_value        = ?,
-                log_admin_user_ip_addr = ?,
-                log_admin_created      = NOW()
-          });
+    if ($dbh) {
 
-        $sth->execute( $user, $action, $value, $ip );
+       # create table if it doesn't exist
+        eval {
+            $dbh->do(qq{
+                CREATE TABLE IF NOT EXISTS admin_log (
+                    admin_log_id int(3) NOT NULL auto_increment,
+                    admin_log_username varchar(15) default NULL,
+                    admin_log_action varchar(55) default NULL,
+                    admin_log_query_string text,
+                    admin_log_user_ip_addr varchar(15) default NULL,
+                    admin_log_created datetime default NULL,
+                    PRIMARY KEY (admin_log_id)
+                )
+              });
+          };
 
-        $dbh->commit
-          if ( $c->config->{database_auto_commit} == 0 );
-    };
+        if ($@) {
+            $self->_error( $c, 'Database CREATE failed', $dbh->errstr );
+        } 
 
-    if ($@) {
-        $dbh->rollback
-          if ( $c->config->{database_auto_commit} == 0 );
+       # write the information to a database
+        eval {
+            $sth = $dbh->prepare(qq{
+                REPLACE INTO admin_log SET
+                    admin_log_username     = ?,
+                    admin_log_action       = ?,
+                    admin_log_query_string = ?,
+                    admin_log_user_ip_addr = ?,
+                    admin_log_created      = NOW()
+              });
 
-        $self->error( $c, 'Database INSERT failed', $sth->errstr );
+            $sth->execute( $user, $action, $string, $ip );
+
+            $dbh->commit
+              if ($c->config->{database_auto_commit} == 0);
+        };
+
+        if ($@) {
+            $dbh->rollback
+              if ($c->config->{database_auto_commit} == 0);
+
+            $self->_error( $c, 'Database INSERT failed', $sth->errstr );
+        }
     }
+    else {
+
+        my $doc_root = $c->config->{apache_doc_root};
+        my $title    = $c->config->{project_title};
+
+        my $logfile = "$doc_root/logs/$title\_admin_log";
+
+        # write the information to a file
+        open (FILE, ">$logfile") or die $self->_error( $c, "Cannot open $logfile: $!" );
+        print FILE "$user\t$action\t$string\t$ip\n";
+        close(FILE);
+    }
+
+    return;
 }
 
 #----------------------------------------------------------------------------+
@@ -310,6 +344,32 @@ Return a single reference to a hash, merge key/value pairs.
 Return a sorted multi-dimensional array.
 
   $self->_sort_data( $column, $order, \%ary_ref );
+
+=head1 OPTIONAL
+
+If database support is available, you can log control panel user actions 
+to a MySQL database.  The database table to store logging information is 
+auto-generated.  Since this is the case, the MySQL user must have CREATE 
+privileges.
+
+In case you want to manually create this table, you can run the following
+SQL statement on the MySQL command-line:
+
+  CREATE TABLE IF NOT EXISTS admin_log (
+      admin_log_id int(3) NOT NULL AUTO_INCREMENT,
+      admin_log_username varchar(15) DEFAULT NULL,
+      admin_log_action varchar(55) DEFAULT NULL,
+      admin_log_query_string text,
+      admin_log_user_ip_addr varchar(15) DEFAULT NULL,
+      admin_log_created datetime DEFAULT NULL,
+      PRIMARY KEY (admin_log_id)
+    );
+
+=head1 DEBUG MODE
+
+If debugging is enabled, the URI and query string are logged.  This can 
+pose as a security risk when running in a production environment since
+personal information (including passwords) may be exposed.
 
 =head1 SEE ALSO
 

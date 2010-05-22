@@ -4,11 +4,13 @@ use strict;
 #use warnings;     # debug
 use Apache::Htpasswd;
 
-our $VERSION = 0.01;
+our $VERSION = 0.09;
 
 use base qw(
   [% project_title %]::Admin
   );
+
+use [% project_title %]::Admin::Users::Error qw( :all );
 
 #----------------------------------------------------------------------------+
 # _default(\%controller)
@@ -73,6 +75,9 @@ sub delete {
 
     my $username = $c->request->param('username');
 
+    $self->_error( $c, ERROR_ACCESS_DENIED )
+      if ($username eq 'admin' || !$c->request->user);
+
     my $htpasswd = $c->config->{apache_doc_root} . '/conf/htpasswd';
 
     my $pwd = new Apache::Htpasswd($htpasswd);
@@ -84,6 +89,8 @@ sub delete {
 
         $pwd->htDelete($_) if (/^(?:|\#)$username/i);
     }
+
+    $self->_log_action( $c, "Deleted admin user - $username" );
 
     # list the users
     $self->_list_users($c);
@@ -99,6 +106,9 @@ sub status {
 
     my $username = $c->request->param('username');
     my $value    = $c->request->param('value');
+
+    $self->_error( $c, ERROR_ACCESS_DENIED )
+      if ($username eq 'admin' || !$c->request->user);
 
     my $htpasswd = $c->config->{apache_doc_root} . '/conf/htpasswd';
 
@@ -126,6 +136,8 @@ sub status {
     }
 
     close(OUTFILE);
+
+    $self->_log_action( $c, "Changed status for user - $username" );
 
     # list the users
     $self->_list_users($c);
