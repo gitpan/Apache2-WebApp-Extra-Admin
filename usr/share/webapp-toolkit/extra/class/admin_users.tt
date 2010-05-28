@@ -4,13 +4,13 @@ use strict;
 #use warnings;     # debug
 use Apache::Htpasswd;
 
-our $VERSION = 0.10;
+our $VERSION = 0.11;
 
 use base qw(
   [% project_title %]::Admin
   );
 
-use [% project_title %]::Admin::Users::Error qw( :all );
+use [% project_title %]::Admin::Users::Error qw( ERROR_ACCESS_DENIED );
 
 #----------------------------------------------------------------------------+
 # _default(\%controller)
@@ -19,6 +19,9 @@ use [% project_title %]::Admin::Users::Error qw( :all );
 
 sub _default {
     my ( $self, $c ) = @_;
+
+    $self->_error( $c, "Error", ERROR_ACCESS_DENIED )
+      unless ($c->request->user eq 'admin');
 
     $self->_list_users($c);
 }
@@ -75,8 +78,8 @@ sub delete {
 
     my $username = $c->request->param('username');
 
-    $self->_error( $c, ERROR_ACCESS_DENIED )
-      if ($username eq 'admin' || !$c->request->user);
+    $self->_error( $c, "Error", ERROR_ACCESS_DENIED )
+      if ($username eq 'admin');
 
     my $htpasswd = $c->config->{apache_doc_root} . '/conf/htpasswd';
 
@@ -107,8 +110,8 @@ sub status {
     my $username = $c->request->param('username');
     my $value    = $c->request->param('value');
 
-    $self->_error( $c, ERROR_ACCESS_DENIED )
-      if ($username eq 'admin' || !$c->request->user);
+    $self->_error( $c, "Error", ERROR_ACCESS_DENIED )
+      if ($username eq 'admin');
 
     my $htpasswd = $c->config->{apache_doc_root} . '/conf/htpasswd';
 
@@ -180,7 +183,7 @@ sub _get_htpasswd_data {
         push( @results, {
             username => $user,
             status   => $status,
-            created  => $c->plugin('DateTime')->format_time( $epoch, '%m-%d-%Y %r' ),
+            created  => $c->plugin('DateTime')->format_time( $epoch, '%m-%d-%Y / %R %p' ),
           });
     }
 

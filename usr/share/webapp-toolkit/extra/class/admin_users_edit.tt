@@ -4,7 +4,7 @@ use strict;
 #use warnings;     # debug
 use Apache::Htpasswd;
 
-our $VERSION = 0.10;
+our $VERSION = 0.11;
 
 use base qw(
   [% project_title %]::Admin
@@ -21,7 +21,8 @@ use [% project_title %]::Admin::Users::Error qw( :all );
 sub _default {
     my ( $self, $c ) = @_;
 
-    $self->_error( $c, ERROR_ACCESS_DENIED ) unless ($c->request->user);
+    $self->_error( $c, "Error", ERROR_ACCESS_DENIED )
+      unless ($c->request->user eq 'admin');
 
     $self->_view_page($c);
 }

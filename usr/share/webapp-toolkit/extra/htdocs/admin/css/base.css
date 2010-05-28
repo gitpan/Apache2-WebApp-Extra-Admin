@@ -32,13 +32,13 @@ body {
 a, a:visited {
 	color: #0000FF;
 	cursor: pointer;
-	text-decoration: underline;
+	text-decoration: none;
 }
 
 a:hover {
 	background-color: #EEEEEE;
 	color: #787878;
-	text-decoration: none;
+	text-decoration: underline;
 }
 
 img {

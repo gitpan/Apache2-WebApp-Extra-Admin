@@ -124,6 +124,10 @@ html, body {
 	width: 150px;
 }
 
+#table a.default {
+	width: 150px;
+}
+
 #table a.number {
 	width: 95px;
 }

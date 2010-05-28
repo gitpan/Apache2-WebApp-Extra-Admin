@@ -1,5 +1,6 @@
 usr/share/webapp-toolkit/extra/class/admin.tt
 usr/share/webapp-toolkit/extra/class/admin_about.tt
+usr/share/webapp-toolkit/extra/class/admin_logs.tt
 usr/share/webapp-toolkit/extra/class/admin_users_add.tt
 usr/share/webapp-toolkit/extra/class/admin_users_edit.tt
 usr/share/webapp-toolkit/extra/class/admin_users_error.tt
@@ -25,6 +26,7 @@ usr/share/webapp-toolkit/extra/htdocs/admin/js/form.js
 usr/share/webapp-toolkit/extra/htdocs/admin/js/menu.js
 usr/share/webapp-toolkit/extra/htdocs/admin/js/popup.js
 usr/share/webapp-toolkit/extra/htdocs/admin/js/prompt.js
+usr/share/webapp-toolkit/extra/manifest/Admin
 usr/share/webapp-toolkit/extra/startup/Admin
 usr/share/webapp-toolkit/extra/templates/admin/default.tt
 usr/share/webapp-toolkit/extra/templates/admin/error.tt
@@ -32,6 +34,7 @@ usr/share/webapp-toolkit/extra/templates/admin/frame_main.tt
 usr/share/webapp-toolkit/extra/templates/admin/frame_side.tt
 usr/share/webapp-toolkit/extra/templates/admin/frame_top.tt
 usr/share/webapp-toolkit/extra/templates/admin/license.tt
+usr/share/webapp-toolkit/extra/templates/admin/logs.tt
 usr/share/webapp-toolkit/extra/templates/admin/menu.tt
 usr/share/webapp-toolkit/extra/templates/admin/panel.tt
 usr/share/webapp-toolkit/extra/templates/admin/system.tt

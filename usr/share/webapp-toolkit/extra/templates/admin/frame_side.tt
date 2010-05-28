@@ -59,6 +59,13 @@
 				</a>
 			</li>
 		</ul>
+		<ul class="options">
+			<li>
+				<a href="/app/admin/logs" target="main">
+					Logs
+				</a>
+			</li>
+		</ul>
 	</div>
 [% END %]
 

@@ -4,7 +4,7 @@ use strict;
 #use warnings;     # debug
 use Params::Validate qw( :all );
 
-our $VERSION = 0.10;
+our $VERSION = 0.11;
 
 use base qw(
   [% project_title %]::Base
@@ -78,9 +78,9 @@ sub _log_action {
           { type => SCALAR  }
           );
 
-    my $user = $c->request->user || 'Unknown';
-    my $ip   = $c->request->connection->remote_ip;
-    my $uri  = $c->request->uri;
+    my $user    = $c->request->user || 'Unknown';
+    my $ip_addr = $c->request->connection->remote_ip;
+    my $uri     = $c->request->uri;
 
     my $param = $c->request->param();
 
@@ -97,7 +97,7 @@ sub _log_action {
 
     if ($dbh) {
 
-       # create table if it doesn't exist
+        # create table if it doesn't exist
         eval {
             $dbh->do(qq{
                 CREATE TABLE IF NOT EXISTS admin_log (
@@ -127,11 +127,11 @@ sub _log_action {
                     admin_log_created      = NOW()
               });
 
-            $sth->execute( $user, $action, $string, $ip );
+            $sth->execute( $user, $action, $string, $ip_addr );
 
             $dbh->commit
               if ($c->config->{database_auto_commit} == 0);
-        };
+          };
 
         if ($@) {
             $dbh->rollback
@@ -146,7 +146,7 @@ sub _log_action {
 
         # write the information to a file
         open (FILE, ">>$logfile") or die $self->_error( $c, "Cannot open $logfile: $!" );
-        print FILE "$user\t$action\t$string\t$ip\n";
+        print FILE "$user\t$action\t$string\t$ip_addr\t" . time() . "\n";
         close(FILE);
     }
 
