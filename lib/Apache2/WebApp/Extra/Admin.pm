@@ -17,7 +17,7 @@
 
 package Apache2::WebApp::Extra::Admin;
 
-our $VERSION = 0.11;
+our $VERSION = 0.12;
 
 1;
 
@@ -36,6 +36,43 @@ This module should NOT be used directly.
 This package provides application sources for a fully functional web based
 admin Control Panel.  You can easily add this I<Extra> to an existing project
 using the C<webapp-extra> helper script provided with the WebApp::Toolkit
+
+=head2 Features
+
+=over
+
+=item * Extensible XHTML/CSS interface.
+
+=item * Template based output.
+
+=item * Compatible with Internet Explorer, Firefox, Safari, Chrome, and Opera web browsers.
+
+=item * User management panel.
+
+=item * User action logging.
+
+=item * Result sorting capabilities.
+
+=back
+
+=head2 Preview
+
+=begin html
+
+<table border="0" cellpadding="2">
+    <tr>
+        <td>Control Panel - Main</td>
+        <td>Super Admin - Users</td>
+        <td>Super Admin - Logs</td>
+    </tr>
+    <tr>
+        <td><a href="http://cpansearch.perl.org/src/MBROOKS/Apache2-WebApp-Extra-Admin-0.12/preview/Control%20Panel%20-%20Main.jpg"><img src="http://cpansearch.perl.org/src/MBROOKS/Apache2-WebApp-Extra-Admin-0.12/preview/Control%20Panel%20-%20Main.jpg" height="180" width="235" /></a></td>
+        <td><a href="http://cpansearch.perl.org/src/MBROOKS/Apache2-WebApp-Extra-Admin-0.12/preview/Control%20Panel%20-%20Super%20Admin%20-%20Users.jpg"><img src="http://cpansearch.perl.org/src/MBROOKS/Apache2-WebApp-Extra-Admin-0.12/preview/Control%20Panel%20-%20Super%20Admin%20-%20Users.jpg" height="180" width="235" /></a></td>
+        <td><a href="http://cpansearch.perl.org/src/MBROOKS/Apache2-WebApp-Extra-Admin-0.12/preview/Control%20Panel%20-%20Super%20Admin%20-%20Logs.jpg"><img src="http://cpansearch.perl.org/src/MBROOKS/Apache2-WebApp-Extra-Admin-0.12/preview/Control%20Panel%20-%20Super%20Admin%20-%20Logs.jpg" height="180" width="235" /></a></td>
+    </tr>
+</table>
+
+=end html
 
 =head1 PREREQUISITES
 
@@ -112,7 +149,7 @@ manage user access this account must exist within your C<htpasswd>
 
 =head1 OPTIONAL
 
-If database support is available, you can log control panel user actions 
+If database support is available, you can log control panel user actions
 to a database.  The database table to store logging information is 
 auto-generated.  Since this is the case, the SQL user must have CREATE 
 privileges.

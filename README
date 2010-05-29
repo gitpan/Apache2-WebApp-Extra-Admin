@@ -10,6 +10,14 @@ DESCRIPTION
     existing project using the "webapp-extra" helper script provided with
     the WebApp::Toolkit
 
+  Features
+    * Extensible XHTML/CSS interface.
+    * Template based output.
+    * Compatible with Internet Explorer, Firefox, Safari, Chrome, and Opera web browsers.
+    * User management panel.
+    * User action logging.
+    * Result sorting capabilities.
+
 PREREQUISITES
       Apache2::WebApp
       Apache2::WebApp::Plugin::DateTime
@@ -75,13 +83,13 @@ ADMIN ACCESS
       Password        password
 
 OPTIONAL
-    If database support is available, you can log control panel user actions 
-    to a database.  The database table to store logging information is 
-    auto-generated.  Since this is the case, the SQL user must have CREATE 
+    If database support is available, you can log control panel user actions
+    to a database. The database table to store logging information is
+    auto-generated. Since this is the case, the SQL user must have CREATE
     privileges.
 
-    In case you want to manually create this table, you can run the following
-    SQL statement on the database command-line:
+    In case you want to manually create this table, you can run the
+    following SQL statement on the database command-line:
 
       CREATE TABLE IF NOT EXISTS admin_log (
           admin_log_id int(3) NOT NULL AUTO_INCREMENT,
@@ -93,9 +101,9 @@ OPTIONAL
           PRIMARY KEY (admin_log_id)
         );
 
-    If a database is not available at the time data is collected, this 
-    information will be written to a file that can be located in your project 
-    "logs" directory.
+    If a database is not available at the time data is collected, this
+    information will be written to a file that can be located in your
+    project "logs" directory.
 
 DEBUG MODE
     If debugging is enabled, the URI and query string are logged. This can
