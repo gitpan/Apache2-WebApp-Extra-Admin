@@ -17,7 +17,7 @@
 
 package Apache2::WebApp::Extra::Admin;
 
-our $VERSION = 0.12;
+our $VERSION = 0.13;
 
 1;
 
@@ -53,26 +53,9 @@ using the C<webapp-extra> helper script provided with the WebApp::Toolkit
 
 =item * Result sorting capabilities.
 
+=item * Pagination (Next/Last pages)
+
 =back
-
-=head2 Preview
-
-=begin html
-
-<table border="0" cellpadding="2">
-    <tr>
-        <td>Control Panel - Main</td>
-        <td>Super Admin - Users</td>
-        <td>Super Admin - Logs</td>
-    </tr>
-    <tr>
-        <td><a href="http://cpansearch.perl.org/src/MBROOKS/Apache2-WebApp-Extra-Admin-0.12/preview/Control%20Panel%20-%20Main.jpg"><img src="http://cpansearch.perl.org/src/MBROOKS/Apache2-WebApp-Extra-Admin-0.12/preview/Control%20Panel%20-%20Main.jpg" height="180" width="235" /></a></td>
-        <td><a href="http://cpansearch.perl.org/src/MBROOKS/Apache2-WebApp-Extra-Admin-0.12/preview/Control%20Panel%20-%20Super%20Admin%20-%20Users.jpg"><img src="http://cpansearch.perl.org/src/MBROOKS/Apache2-WebApp-Extra-Admin-0.12/preview/Control%20Panel%20-%20Super%20Admin%20-%20Users.jpg" height="180" width="235" /></a></td>
-        <td><a href="http://cpansearch.perl.org/src/MBROOKS/Apache2-WebApp-Extra-Admin-0.12/preview/Control%20Panel%20-%20Super%20Admin%20-%20Logs.jpg"><img src="http://cpansearch.perl.org/src/MBROOKS/Apache2-WebApp-Extra-Admin-0.12/preview/Control%20Panel%20-%20Super%20Admin%20-%20Logs.jpg" height="180" width="235" /></a></td>
-    </tr>
-</table>
-
-=end html
 
 =head1 PREREQUISITES
 
@@ -123,6 +106,13 @@ this process to insure write permission is allowed within the installation direc
 =head3 Accessing the admin control panel
 
   http://domain.com/app/admin
+
+=head1 CONFIGURATION
+
+Unless it already exists, add the following to your projects I<webapp.conf>
+
+  [custom]
+  items_per_page = 25     # default value
 
 =head1 SECURITY
 

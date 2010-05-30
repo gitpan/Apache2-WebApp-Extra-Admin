@@ -13,10 +13,12 @@ DESCRIPTION
   Features
     * Extensible XHTML/CSS interface.
     * Template based output.
-    * Compatible with Internet Explorer, Firefox, Safari, Chrome, and Opera web browsers.
+    * Compatible with Internet Explorer, Firefox, Safari, Chrome, and Opera
+    web browsers.
     * User management panel.
     * User action logging.
     * Result sorting capabilities.
+    * Pagination (Next/Last pages)
 
 PREREQUISITES
       Apache2::WebApp
@@ -60,6 +62,13 @@ GETTING STARTED
 
    Accessing the admin control panel
       http://domain.com/app/admin
+
+CONFIGURATION
+    Unless it already exists, add the following to your projects
+    *webapp.conf*
+
+      [custom]
+      items_per_page = 25     # default value
 
 SECURITY
     By default, the admin control panel is public and not secure. You can

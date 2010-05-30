@@ -4,7 +4,7 @@ use strict;
 #use warnings;     # debug
 use Apache::Htpasswd;
 
-our $VERSION = 0.12;
+our $VERSION = 0.13;
 
 use base qw(
   [% project_title %]::Admin

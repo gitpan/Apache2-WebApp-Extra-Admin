@@ -4,7 +4,7 @@ use strict;
 #use warnings;     # debug
 use Params::Validate qw( :all );
 
-our $VERSION = 0.12;
+our $VERSION = 0.13;
 
 use base qw(
   [% project_title %]::Base
