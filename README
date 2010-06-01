@@ -10,6 +10,8 @@ DESCRIPTION
     existing project using the "webapp-extra" helper script provided with
     the WebApp::Toolkit
 
+    http://cpansearch.perl.org/src/MBROOKS/Apache2-WebApp-Extra-Admin-0.14/preview
+
   Features
     * Extensible XHTML/CSS interface.
     * Template based output.

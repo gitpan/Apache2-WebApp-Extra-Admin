@@ -3,7 +3,7 @@ package [% project_title %]::Admin::Users::Error;
 use strict;
 #use warnings;     # debug
 
-our $VERSION = 0.13;
+our $VERSION = 0.14;
 
 #----------------------------------------------------------------------------+
 # Constants to be exported.

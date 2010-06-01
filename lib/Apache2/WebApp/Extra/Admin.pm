@@ -17,7 +17,7 @@
 
 package Apache2::WebApp::Extra::Admin;
 
-our $VERSION = 0.13;
+our $VERSION = 0.14;
 
 1;
 
@@ -36,6 +36,8 @@ This module should NOT be used directly.
 This package provides application sources for a fully functional web based
 admin Control Panel.  You can easily add this I<Extra> to an existing project
 using the C<webapp-extra> helper script provided with the WebApp::Toolkit
+
+L<http://cpansearch.perl.org/src/MBROOKS/Apache2-WebApp-Extra-Admin-0.14/preview>
 
 =head2 Features
 

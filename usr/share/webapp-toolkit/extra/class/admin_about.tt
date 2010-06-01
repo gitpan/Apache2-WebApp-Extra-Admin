@@ -20,7 +20,7 @@ package [% project_title %]::Admin::About;
 use strict;
 #use warnings;     # debug
 
-our $VERSION = 0.13;
+our $VERSION = 0.14;
 
 use base qw(
   [% project_title %]::Admin
