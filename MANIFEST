@@ -5,9 +5,9 @@ README
 Changes
 Makefile.PL
 META.yml
-preview/Control Panel - Main.jpg
-preview/Control Panel - Super Admin - Logs.jpg
-preview/Control Panel - Super Admin - Users.jpg
+preview/Control_Panel_Main.jpg
+preview/Control_Panel_Super_Admin_Logs.jpg
+preview/Control_Panel_Super_Admin_Users.jpg
 lib/Apache2/WebApp/Extra/Admin.pm
 usr/share/webapp-toolkit/extra/class/admin.tt
 usr/share/webapp-toolkit/extra/class/admin_about.tt
