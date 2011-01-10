@@ -11,6 +11,7 @@ preview/Control_Panel_Super_Admin_Users.jpg
 lib/Apache2/WebApp/Extra/Admin.pm
 usr/share/webapp-toolkit/extra/class/admin.tt
 usr/share/webapp-toolkit/extra/class/admin_about.tt
+usr/share/webapp-toolkit/extra/class/admin_logs.tt
 usr/share/webapp-toolkit/extra/class/admin_users_add.tt
 usr/share/webapp-toolkit/extra/class/admin_users_edit.tt
 usr/share/webapp-toolkit/extra/class/admin_users_error.tt
@@ -21,7 +22,6 @@ usr/share/webapp-toolkit/extra/htdocs/admin/css/content.css
 usr/share/webapp-toolkit/extra/htdocs/admin/css/form.css
 usr/share/webapp-toolkit/extra/htdocs/admin/css/menu.css
 usr/share/webapp-toolkit/extra/htdocs/admin/css/override.css
-usr/share/webapp-toolkit/extra/htdocs/admin/css/page.css
 usr/share/webapp-toolkit/extra/htdocs/admin/css/results.css
 usr/share/webapp-toolkit/extra/htdocs/admin/css/top.css
 usr/share/webapp-toolkit/extra/htdocs/admin/images/arrow_asc.gif
@@ -44,6 +44,7 @@ usr/share/webapp-toolkit/extra/templates/admin/frame_main.tt
 usr/share/webapp-toolkit/extra/templates/admin/frame_side.tt
 usr/share/webapp-toolkit/extra/templates/admin/frame_top.tt
 usr/share/webapp-toolkit/extra/templates/admin/license.tt
+usr/share/webapp-toolkit/extra/templates/admin/logs.tt
 usr/share/webapp-toolkit/extra/templates/admin/menu.tt
 usr/share/webapp-toolkit/extra/templates/admin/panel.tt
 usr/share/webapp-toolkit/extra/templates/admin/system.tt
