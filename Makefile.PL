@@ -20,6 +20,6 @@ WriteMakefile(
 sub MY::postamble {
 '
 install::
-	cp -rv usr/share/webapp-toolkit/extra* /usr/share/webapp-toolkit
+	cp -rv usr/share/webapp-toolkit/extra* $(PREFIX)/share/webapp-toolkit
 ';
 }
