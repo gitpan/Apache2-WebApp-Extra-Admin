@@ -14,8 +14,8 @@ function requireFields() {
 
 	if (arguments.length) {
 		args = arguments;
-		document.onkeyup = function (e) { allowSubmit() }
-		document.onclick = function (e) { allowSubmit() }
+		document.onkeyup = function() { allowSubmit() }
+		document.onclick = function() { allowSubmit() }
 		allowSubmit();
 	}
 
@@ -23,21 +23,21 @@ function requireFields() {
 }
 
 function allowSubmit() {
-	if (fieldCheck()) {
-		document.getElementById('allow').disabled = false;
+	if ( fieldCheck() ) {
+		document.getElementById("allow").disabled = false;
 	}
 	else {
-		document.getElementById('allow').disabled = true;
+		document.getElementById("allow").disabled = true;
 	}
 }
 
 function fieldCheck() {
-	for ( var i = 0; i < args.length; i++ ) {
+	for (var i = 0; i < args.length; i++) {
 		var elm = document.forms[form].elements[args[i]];
 
 		if (!elm.value) { return false }
 
-		if (elm.type == 'checkbox' || elm.type == 'radio') {
+		if (elm.type == "checkbox" || elm.type == "radio") {
 			if (!elm.checked) {
 				return false;
 			}
@@ -48,7 +48,7 @@ function fieldCheck() {
 
 function countForms() {
 	var total = 0;
-	for ( var i = 0; i < document.forms.length; i++ ) {
+	for (var i = 0; i < document.forms.length; i++) {
 		total++;
 	}
 
@@ -61,21 +61,20 @@ function countForms() {
 }
 
 function eventFieldError() {
-	var elm = document.getElementsByTagName('*');
-	var obj = document.getElementById('alert');
+	var elm = document.getElementsByTagName("*");
+	var obj = document.getElementById("alert");
 
 	var error;
 
-	for ( var i = 0; i < elm.length; i++ ) {
-		if (elm[i].className.match(/error/)) {
-			elm[i].onmouseover = function (e) {
+	for (var i = 0; i < elm.length; i++) {
+		if (elm[i].className.match(/error/) ) {
+			elm[i].onmouseover = function() {
 				error = obj.innerHTML;
 				obj.innerHTML = this.title;
 				this.style.backgroundColor = "#FF0000";
 				this.style.color           = "#FFFFFF";
 			}
-
-			elm[i].onmouseout = function (e) {
+			elm[i].onmouseout = function() {
 				obj.innerHTML = error;
 				this.style.backgroundColor = "#FFFFFF";
 				this.style.color           = "#FF0000";
@@ -85,21 +84,22 @@ function eventFieldError() {
 }
 
 function eventSubmit() {
-	document.getElementById('allow').onclick = function (e) {
+	document.getElementById("allow").onclick = function() {
 		disableSubmit()
 	};
 }
 
 function disableSubmit() {
-	document.getElementById('allow').disabled = true;
+	document.getElementById("allow").disabled = true;
 	document.forms[form].submit();	// i.e. is lame, fix
 }
 
 function focusFirstField(name) {
 	if (!name) { name = 0 }
 
-	for( var i = 0; i < document.forms[name].length; i++ ) {
-		if (document.forms[name][i].type == 'text' || document.forms[name][i].type == 'password' ) {
+	for(var i = 0; i < document.forms[name].length; i++) {
+		if (document.forms[name][i].type == "text" ||
+		    document.forms[name][i].type == "password") {
 			if (document.forms[name][i].disabled != true) {
 				document.forms[name][i].focus();
 				break;

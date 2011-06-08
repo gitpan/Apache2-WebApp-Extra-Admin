@@ -9,7 +9,7 @@
 var menu_total;
 
 function initMenus(total) {
-	var last = getCookie('last');
+	var last = getCookie("last");
 
 	menu_total = total;
 
@@ -21,38 +21,34 @@ function initMenus(total) {
 			resetMenu();
 		}
 		else {
-			viewOptions('menu_1');
+			viewOptions("menu_1");
 		}
 	}
 }
 
 function loadMenu(mode) {
-	var last = getCookie('last');
-    
+	var last = getCookie("last");
 	if (last != mode) {
         parent.side.viewOptions(mode);
     }
 }
 
 function resetMenu() {
-	for ( var i = 1; i <= menu_total; i++ ) {
-		document.getElementById( 'menu_' + i ).style.display = 'none';
+	for (var i = 1; i <= menu_total; i++) {
+		document.getElementById("menu_" + i).style.display = "none";
 	}
 }
 
 function viewOptions(mode) {
 	var obj = document.getElementById(mode);
 
-	if (obj.style.display == 'block') {
-		obj.style.display = 'none';
-
-		delCookie('last');
+	if (obj.style.display == "block") {
+		obj.style.display = "none";
+		delCookie("last");
 	}
 	else {
 		resetMenu();
-
-		obj.style.display = 'block';
-
-		setCookie('last', mode);
+		obj.style.display = "block";
+		setCookie("last", mode);
 	}
 }

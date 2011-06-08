@@ -1,17 +1,15 @@
 package [% project_title %]::Admin::Users::Edit;
 
 use strict;
-#use warnings;     # debug
-use Apache::Htpasswd;
-
-our $VERSION = 0.15;
-
+use warnings;
 use base qw(
   [% project_title %]::Admin
   [% project_title %]::Admin::Users
   );
-
 use [% project_title %]::Admin::Users::Error qw( :all );
+use Apache::Htpasswd;
+
+our $VERSION = 0.19;
 
 #----------------------------------------------------------------------------+
 # _default(\%controller)
@@ -19,21 +17,21 @@ use [% project_title %]::Admin::Users::Error qw( :all );
 # Dispatch the action.
 
 sub _default {
-    my ( $self, $c ) = @_;
+    my ($self, $c) = @_;
 
-    $self->_error( $c, "Error", ERROR_ACCESS_DENIED )
+    $self->SUPER::_error($c, 'Error', ERROR_ACCESS_DENIED)
       unless ($c->request->user eq 'admin');
 
     $self->_view_page($c);
 }
 
 #----------------------------------------------------------------------------+
-# _view_page( \%controller, \%param, \%error )
+# _view_page(\%controller, \%param, \%error)
 #
 # View the page.
 
 sub _view_page {
-    my ( $self, $c, $param_ref, $error_ref ) = @_;
+    my ($self, $c, $param_ref, $error_ref) = @_;
 
     $param_ref->{username} = $c->request->param('username');
 
@@ -48,7 +46,7 @@ sub _view_page {
             edit  => 1
         }
       )
-      or $self->_error( $c, "Template process failed", $c->template->error() );
+      or $self->SUPER::_error($c, 'Template process failed', $c->template->error() );
 
     exit;
 }
@@ -57,7 +55,7 @@ sub _view_page {
 # Validate the form input, process the request.
 
 sub submit {
-    my ( $self, $c ) = @_;
+    my ($self, $c) = @_;
 
     # convert the form input into hash data
     my %param = $c->plugin('CGI')->params($c);
@@ -68,14 +66,14 @@ sub submit {
     my $pwd = new Apache::Htpasswd($htpasswd);
 
     # check the username field data
-    if ( $param{username} ) {
-        unless ( $param{username} =~ /\A (?: \w|\s|\-|\_){5,15} \z/x )
+    if ($param{username}) {
+        unless ($param{username} =~ /\A (?: \w|\s|\-|\_){5,15} \z/x)
         {
             $error{username} = ERROR_USERNAME;
         }
         else {
-            if ( !$pwd->fetchPass(       $param{username} ) &&
-                 !$pwd->fetchPass( '#' . $param{username} ) )
+            if (!$pwd->fetchPass(      $param{username} ) &&
+                !$pwd->fetchPass('#' . $param{username} ) )
             {
                 $error{username} = ERROR_USERNAME_DOESNT_EXIST;
             }
@@ -86,8 +84,8 @@ sub submit {
     }
 
     # check the password field data
-    if ( $param{password} ) {
-        unless ( $param{password} =~ /\A (?: .){8,15} \z/x )
+    if ($param{password}) {
+        unless ($param{password} =~ /\A (?: .){8,15} \z/x)
         {
             $error{password} = ERROR_PASSWORD;
         }
@@ -98,9 +96,9 @@ sub submit {
 
     unless (values %error) {
 
-        $pwd->htpasswd( $param{username}, $param{password}, { overwrite => 1 } );
+        $pwd->htpasswd($param{username}, $param{password}, { overwrite => 1 });
 
-        $self->_log_action( $c, 'Edit admin user - ' . $param{username} );
+        $self->SUPER::_log_action($c, 'Updated User (' . $param{username} . ')');
 
         # list the users
         $self->_list_users($c);
@@ -110,7 +108,7 @@ sub submit {
         $error{alert} = ERROR_FORM_INPUT;
 
         # errors exist, reload the form
-        $self->_view_page( $c, \%param, \%error );
+        $self->_view_page($c, \%param, \%error);
     }
 }
 
@@ -134,7 +132,7 @@ Edit an existing htpasswd user entry.
 
 View the page.
 
-  $self->_view_page( \%controller, \%param, \%error );
+  $self->_view_page(\%controller, \%param, \%error);
 
 =head2 URI DISPATCHABLE
 

@@ -10,3 +10,9 @@ Revision history for Perl module Apache2::WebApp::Extra::Admin
 
 0.17
     - Added $(PREFIX) in Makefile.PL to build script template install path.
+
+0.19
+    - Fixed broken link to screenshots due to invalid URL
+    - Added code to create admin_log when it doesn't exist.  Updated log output messages.
+    - Updated build WebApp version requirements.
+    - Spring cleaning.

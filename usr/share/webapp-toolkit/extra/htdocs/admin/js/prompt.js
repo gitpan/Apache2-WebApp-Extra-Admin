@@ -6,23 +6,23 @@
  *  http://www.opensource.org/licenses/bsd-license.php
  */
 
-function confirmDelete( name, url ) {
+function confirmDelete(name, url) {
 	var answer = confirm("Are you sure you want to delete '" + name + "'");
 	if (answer) {
-		window.open( url, "_self" );
+		window.open(url, "_self");
 	}
 }
 
-function changeOrder( mesg, url ) {
-	var answer = prompt( mesg, "" );
+function changeOrder(mesg, url ) {
+	var answer = prompt(mesg, "");
 	if (answer) {
-		window.open( url + '&new_value=' + answer, '_self' );
+		window.open(url + "&new_value=" + answer, "_self");
 	}
 }
  
 function sendEmail(url) {
-	var answer = prompt( "Please enter a valid e-mail address", "" );
+	var answer = prompt("Please enter a valid e-mail address", "");
 	if (answer) {
-		window.open( url + '&email=' + answer, '_self' );
+		window.open(url + "&email=" + answer, "_self");
 	}
 }

@@ -18,13 +18,10 @@
 package [% project_title %]::Admin::About;
 
 use strict;
-#use warnings;     # debug
+use warnings;
+use base '[% project_title %]::Admin';
 
-our $VERSION = 0.15;
-
-use base qw(
-  [% project_title %]::Admin
-  );
+our $VERSION = 0.19;
 
 #----------------------------------------------------------------------------+
 # system(\%controller)
@@ -32,7 +29,7 @@ use base qw(
 # Print system environment information.
 
 sub system {
-    my ( $self, $c ) = @_;
+    my ($self, $c) = @_;
 
     $c->request->content_type('text/html');
 
@@ -43,7 +40,7 @@ sub system {
             data => \%ENV,
         }
       )
-      or $self->_error( $c, 'Template process failed', $c->template->error() );
+      or $self->SUPER::_error($c, 'Template process failed', $c->template->error() );
 
     exit;
 }

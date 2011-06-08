@@ -6,10 +6,10 @@
  *  http://www.opensource.org/licenses/bsd-license.php
  */
 
-function openWindow( url, win, h, w, resize, scroll  ) {
+function openWindow(url, win, h, w, resize, scroll) {
 	resize = (resize) ? "yes" : "no";
 	scroll = (scroll) ? "yes" : "no";
-	window.open(url, win, 'height=' + h + ',width=' + w + ',resizable=' + resize + ', scrollbars=' + scroll + ', toolbar=no');
+	window.open(url, win, "height=" + h + ",width=" + w + ",resizable=" + resize + ", scrollbars=" + scroll + ", toolbar=no");
 }
 
 function reloadParent() {

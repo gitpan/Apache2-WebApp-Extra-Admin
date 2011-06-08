@@ -1,16 +1,12 @@
 package [% project_title %]::Admin::Users;
 
 use strict;
-#use warnings;     # debug
+use warnings;
+use base '[% project_title %]::Admin';
+use [% project_title %]::Admin::Users::Error qw( ERROR_ACCESS_DENIED );
 use Apache::Htpasswd;
 
-our $VERSION = 0.15;
-
-use base qw(
-  [% project_title %]::Admin
-  );
-
-use [% project_title %]::Admin::Users::Error qw( ERROR_ACCESS_DENIED );
+our $VERSION = 0.19;
 
 #----------------------------------------------------------------------------+
 # _default(\%controller)
@@ -18,9 +14,9 @@ use [% project_title %]::Admin::Users::Error qw( ERROR_ACCESS_DENIED );
 # Dispatch the action.
 
 sub _default {
-    my ( $self, $c ) = @_;
+    my ($self, $c) = @_;
 
-    $self->_error( $c, "Error", ERROR_ACCESS_DENIED )
+    $self->SUPER::_error($c, 'Error', ERROR_ACCESS_DENIED)
       unless ($c->request->user eq 'admin');
 
     $self->_list_users($c);
@@ -32,7 +28,7 @@ sub _default {
 # List the htpasswd users.
 
 sub _list_users {
-    my ( $self, $c ) = @_;
+    my ($self, $c) = @_;
 
     my $start = $c->request->param('start') || '0';
     my $sc    = $c->request->param('sc')    || 'username';
@@ -44,13 +40,11 @@ sub _list_users {
     $error = 1 if ($sc    !~ /^[\w]{1,55}$/); 
     $error = 1 if ($so    !~ /^[\w]{1,4}$/);
 
-    $self->_error( $c, "Error", "Bad Request" ) if $error;
+    $self->SUPER::_error($c, 'Error', 'Bad Request') if $error;
 
-    my $results = $self->_sort_data( $sc, $so, $self->_get_htpasswd_data($c) );
-
-    my $total = @$results;
-
-    my $limit = $c->config->{custom_items_per_page} || '25';
+    my $results = $self->SUPER::_sort_data($sc, $so, $self->_get_htpasswd_data($c) );
+    my $total   = @$results;
+    my $limit   = $c->config->{custom_items_per_page} || '25';
 
     $c->request->content_type('text/html');
 
@@ -60,10 +54,10 @@ sub _list_users {
             %{ $c->config },
             sc   => $sc,
             so   => $so,
-            data => $self->_gen_results( $total, $start, $limit, \@$results ),
+            data => $self->SUPER::_gen_results($total, $start, $limit, \@$results),
         }
       )
-      or $self->_error( $c, "Template process failed", $c->template->error() );
+      or $self->SUPER::_error($c, 'Template process failed', $c->template->error() );
 
     exit;
 }
@@ -74,18 +68,16 @@ sub _list_users {
 # Delete the user from the htpasswd file.
 
 sub delete {
-    my ( $self, $c ) = @_;
+    my ($self, $c) = @_;
 
     my $username = $c->request->param('username');
 
-    $self->_error( $c, "Error", ERROR_ACCESS_DENIED )
+    $self->SUPER::_error($c, 'Error', ERROR_ACCESS_DENIED)
       if ($username eq 'admin');
 
     my $htpasswd = $c->config->{apache_doc_root} . '/conf/htpasswd';
-
-    my $pwd = new Apache::Htpasswd($htpasswd);
-
-    my @users = $pwd->fetchUsers();
+    my $pwd      = new Apache::Htpasswd($htpasswd);
+    my @users    = $pwd->fetchUsers();
 
     foreach (@users) {
         next if ($username eq 'admin');     # always exclude
@@ -93,7 +85,7 @@ sub delete {
         $pwd->htDelete($_) if (/^(?:|\#)$username/i);
     }
 
-    $self->_log_action( $c, "Deleted admin user - $username" );
+    $self->SUPER::_log_action($c, "Deleted User ($username)");
 
     # list the users
     $self->_list_users($c);
@@ -105,25 +97,23 @@ sub delete {
 # Change the user status.
 
 sub status {
-    my ( $self, $c ) = @_;
+    my ($self, $c) = @_;
 
     my $username = $c->request->param('username');
     my $value    = $c->request->param('value');
 
-    $self->_error( $c, "Error", ERROR_ACCESS_DENIED )
+    $self->SUPER::_error($c, 'Error', ERROR_ACCESS_DENIED)
       if ($username eq 'admin');
 
     my $htpasswd = $c->config->{apache_doc_root} . '/conf/htpasswd';
 
-    open (INFILE, $htpasswd)     or die $self->_error( $c, "Cannot open $htpasswd: $!" );
+    open (INFILE, $htpasswd) or die $self->SUPER::_error($c, "Cannot open $htpasswd: $!");
     my @lines = <INFILE>;
     close(INFILE);
 
-    open (OUTFILE, ">$htpasswd") or die $self->_error( $c, "Cannot open $htpasswd: $!" );
-
+    open (OUTFILE, ">$htpasswd") or die $self->SUPER::_error($c, "Cannot open $htpasswd: $!");
     foreach (@lines) {
         chomp;
-
         next if ($username eq 'admin');
 
         if (/^(?:|\#)$username/i) {
@@ -137,10 +127,9 @@ sub status {
 
         print OUTFILE "$_\n";
     }
-
     close(OUTFILE);
 
-    $self->_log_action( $c, "Changed status for user - $username" );
+    $self->SUPER::_log_action($c, "Changed Status to '$value' ($username)");
 
     # list the users
     $self->_list_users($c);
@@ -152,11 +141,11 @@ sub status {
 # Return the htpasswd user list as a reference to an array.
 
 sub _get_htpasswd_data {
-    my ( $self, $c ) = @_;
+    my ($self, $c) = @_;
 
     my $htpasswd = $c->config->{apache_doc_root} . '/conf/htpasswd';
 
-    open (FILE, $htpasswd) or die $self->_error( $c, "Cannot open $htpasswd: $!" );
+    open (FILE, $htpasswd) or die $self->ERROR::_error($c, "Cannot open $htpasswd: $!");
     my @lines = <FILE>;
     close(FILE);
 
@@ -164,8 +153,7 @@ sub _get_htpasswd_data {
 
     foreach (@lines) {
         chomp;
-
-        my ( $user, $pass, $epoch ) = split(/\:/);
+        my ($user, $pass, $epoch) = split(/\:/);
 
         my $status;
 
@@ -183,7 +171,7 @@ sub _get_htpasswd_data {
         push( @results, {
             username => $user,
             status   => $status,
-            created  => $c->plugin('DateTime')->format_time( $epoch, '%m-%d-%Y / %R %p' ),
+            created  => $c->plugin('DateTime')->format_time($epoch, '%m-%d-%Y / %R %p'),
           });
     }
 

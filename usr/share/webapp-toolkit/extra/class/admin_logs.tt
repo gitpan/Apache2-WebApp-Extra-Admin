@@ -1,15 +1,11 @@
 package [% project_title %]::Admin::Logs;
 
 use strict;
-#use warnings;     # debug
-
-our $VERSION = 0.15;
-
-use base qw(
-  [% project_title %]::Admin
-  );
-
+use warnings;
+use base '[% project_title %]::Admin';
 use [% project_title %]::Admin::Users::Error qw( ERROR_ACCESS_DENIED );
+
+our $VERSION = 0.19;
 
 #----------------------------------------------------------------------------+
 # _default(\%controller)
@@ -17,9 +13,9 @@ use [% project_title %]::Admin::Users::Error qw( ERROR_ACCESS_DENIED );
 # Dispatch the action.
 
 sub _default {
-    my ( $self, $c ) = @_;
+    my ($self, $c) = @_;
 
-    $self->_error( $c, "Error", ERROR_ACCESS_DENIED )
+    $self->SUPER::_error($c, 'Error', ERROR_ACCESS_DENIED)
       unless ($c->request->user eq 'admin');
 
     $self->_list_entries($c);
@@ -31,7 +27,7 @@ sub _default {
 # List the log entries.
 
 sub _list_entries {
-    my ( $self, $c ) = @_;
+    my ($self, $c) = @_;
 
     my $start = $c->request->param('start') || '0';
     my $sc    = $c->request->param('sc')    || 'admin_log_username';
@@ -43,19 +39,17 @@ sub _list_entries {
     $error = 1 if ($sc    !~ /^[\w]{1,55}$/); 
     $error = 1 if ($so    !~ /^[\w]{1,4}$/);
 
-    $self->_error( $c, "Error", "Bad Request" ) if $error;
+    $self->SUPER::_error($c, 'Error', 'Bad Request') if $error;
 
     # read from database, if available - defaults to file
     my $data =
-      ( defined $c->stash('DBH') )
+      (defined $c->stash('DBH') )
         ? $self->_get_entries_from_db($c)
         : $self->_get_entries_from_file($c);
 
-    my $results = $self->_sort_data( $sc, $so, $data );
-
-    my $total = @$results;
-
-    my $limit = $c->config->{custom_items_per_page} || '25';
+    my $results = $self->SUPER::_sort_data($sc, $so, $data);
+    my $total   = @$results;
+    my $limit   = $c->config->{custom_items_per_page} || '25';
 
     $c->request->content_type('text/html');
 
@@ -65,10 +59,10 @@ sub _list_entries {
             %{ $c->config },
             sc   => $sc,
             so   => $so,
-            data => $self->_gen_results( $total, $start, $limit, \@$results ),
+            data => $self->SUPER::_gen_results($total, $start, $limit, \@$results),
         }
       )
-      or $self->_error( $c, "Template process failed", $c->template->error() );
+      or $self->SUPER::_error($c, 'Template process failed', $c->template->error() );
 
     exit;
 }
@@ -79,31 +73,35 @@ sub _list_entries {
 # Return the log entry file data as a reference to an array.
 
 sub _get_entries_from_file {
-    my ( $self, $c ) = @_;
+    my ($self, $c) = @_;
 
     my $logfile = $c->config->{apache_doc_root} . '/logs/admin_log';
 
-    return unless (-f $logfile);
-
     my @data;
 
-    open (FILE, $logfile) or die $self->_error( $c, "Cannot open $logfile: $!" );
+    if (-f $logfile) {
+        open (INFILE, $logfile) or die $self->SUPER::_error($c, "Cannot open $logfile: $!");
+        while (<INFILE>) {
+            chomp;
 
-    while (<FILE>) {
-        chomp;
+            my ($user, $action, $string, $ip, $epoch) = split(/\t/);
 
-        my ( $user, $action, $string, $ip, $epoch ) = split(/\t/);
-
-        push @data, {
-            admin_log_username     => $user,
-            admin_log_action       => $action,
-            admin_log_query_string => $string,
-            admin_log_user_ip_addr => $ip,
-            created                => $c->plugin('DateTime')->format_time( $epoch, '%m-%d-%Y / %R %p' )
-          };
+            push @data, {
+                admin_log_username     => $user,
+                admin_log_action       => $action,
+                admin_log_query_string => $string,
+                admin_log_user_ip_addr => $ip,
+                created                => $c->plugin('DateTime')->format_time($epoch, '%m-%d-%Y / %R %p')
+              };
+        }
+        close(INFILE);
     }
+    else {
 
-    close(FILE);
+        # create the log file
+        open (FILE, ">$logfile") or $self->SUPER::_error("Cannot open file: $!");
+        close(FILE);
+    }
 
     return \@data;
 }
@@ -114,14 +112,14 @@ sub _get_entries_from_file {
 # Return the log entry database as a reference to an array.
 
 sub _get_entries_from_db {
-    my ( $self, $c ) = @_;
+    my ($self, $c) = @_;
 
-    my ($sth);
+    my $sth;
 
     eval {
         $sth = $c->stash('DBH')->prepare(qq{
             SELECT *,
-              DATE_FORMAT( admin_log_created, '%m-%d-%Y / %H:%i %p' ) AS created
+              DATE_FORMAT(admin_log_created, '%m-%d-%Y / %H:%i %p') AS created
               FROM admin_log
              ORDER BY admin_log_created
             });
@@ -130,7 +128,7 @@ sub _get_entries_from_db {
       };
 
     if ($@) {
-        $self->_error( $c, 'Database SELECT failed', $sth->errstr );
+        $self->SUPER::_error($c, 'Database SELECT failed', $sth->errstr);
     }
 
     return $sth->fetchall_arrayref({});

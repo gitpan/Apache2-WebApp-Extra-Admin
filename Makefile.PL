@@ -8,7 +8,7 @@ WriteMakefile(
     VERSION_FROM => 'lib/Apache2/WebApp/Extra/Admin.pm', # finds \$VERSION
     AUTHOR       => 'Marc S. Brooks (mbrooks@cpan.org)',
     PREREQ_PM    => {
-       'Apache2::WebApp'                   => 0.38,
+       'Apache2::WebApp'                   => 0.39,
        'Apache2::WebApp::Plugin::DateTime' => 0.06,
        'Apache2::WebApp::Plugin::DBI'      => 0.09,
        'Apache::Htpasswd'                  => 1.8,
